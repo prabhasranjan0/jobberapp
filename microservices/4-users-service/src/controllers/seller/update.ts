@@ -1,6 +1,6 @@
 import { sellerSchema } from '@users/schemes/seller';
 import { updateSeller } from '@users/services/seller.service';
-import { BadRequestError, ISellerDocument } from '@uzochukwueddie/jobber-shared';
+import { BadRequestError, ISellerDocument } from '@prabhasranjan0/jobber-share';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 

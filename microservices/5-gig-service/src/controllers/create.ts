@@ -1,7 +1,7 @@
 import { getDocumentCount } from '@gig/elasticsearch';
 import { gigCreateSchema } from '@gig/schemes/gig';
 import { createGig } from '@gig/services/gig.service';
-import { BadRequestError, ISellerGig, uploads } from '@uzochukwueddie/jobber-shared';
+import { BadRequestError, ISellerGig, uploads } from '@prabhasranjan0/jobber-share';
 import { UploadApiResponse } from 'cloudinary';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
@@ -11,7 +11,7 @@ const gigCreate = async (req: Request, res: Response): Promise<void> => {
   if (error?.details) {
     throw new BadRequestError(error.details[0].message, 'Create gig() method');
   }
-  const result: UploadApiResponse = await uploads(req.body.coverImage) as UploadApiResponse;
+  const result: UploadApiResponse = (await uploads(req.body.coverImage)) as UploadApiResponse;
   if (!result.public_id) {
     throw new BadRequestError('File upload error. Try again.', 'Create gig() method');
   }

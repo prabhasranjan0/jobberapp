@@ -1,5 +1,5 @@
 import { getRandomSellers, getSellerById, getSellerByUsername } from '@users/services/seller.service';
-import { ISellerDocument } from '@uzochukwueddie/jobber-shared';
+import { ISellerDocument } from '@prabhasranjan0/jobber-share';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 

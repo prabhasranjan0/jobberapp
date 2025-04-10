@@ -1,4 +1,4 @@
-import { IAuthPayload, IMessageDocument } from '@uzochukwueddie/jobber-shared';
+import { IAuthPayload, IMessageDocument } from '@prabhasranjan0/jobber-share';
 import { Response } from 'express';
 
 export const chatMockRequest = (sessionData: IJWT, body: IMessageDocument, currentUser?: IAuthPayload | null, params?: IParams) => ({
@@ -46,5 +46,5 @@ export const messageDocument: IMessageDocument = {
   receiverPicture: '',
   isRead: false,
   hasOffer: false,
-  offer: undefined,
+  offer: undefined
 };

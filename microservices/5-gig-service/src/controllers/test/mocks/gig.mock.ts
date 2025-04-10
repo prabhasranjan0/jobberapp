@@ -1,4 +1,4 @@
-import { IAuthPayload, ISellerGig } from '@uzochukwueddie/jobber-shared';
+import { IAuthPayload, ISellerGig } from '@prabhasranjan0/jobber-share';
 import { Response } from 'express';
 
 export const gigMockRequest = (sessionData: IJWT, body: ISellerGig, currentUser?: IAuthPayload | null, params?: IParams) => ({

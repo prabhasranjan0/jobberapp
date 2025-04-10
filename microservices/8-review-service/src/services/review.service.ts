@@ -1,7 +1,7 @@
 import { pool } from '@review/database';
 import { publishFanoutMessage } from '@review/queues/review.producer';
 import { reviewChannel } from '@review/server';
-import { IReviewDocument, IReviewMessageDetails } from '@uzochukwueddie/jobber-shared';
+import { IReviewDocument, IReviewMessageDetails } from '@prabhasranjan0/jobber-share';
 import { map } from 'lodash';
 import { QueryResult } from 'pg';
 
@@ -24,18 +24,7 @@ const objKeys: IReviewerObjectKeys = {
 };
 
 const addReview = async (data: IReviewDocument): Promise<IReviewDocument> => {
-  const {
-    gigId,
-    reviewerId,
-    reviewerImage,
-    sellerId,
-    review,
-    rating,
-    orderId,
-    reviewType,
-    reviewerUsername,
-    country
-  } = data;
+  const { gigId, reviewerId, reviewerImage, sellerId, review, rating, orderId, reviewType, reviewerUsername, country } = data;
   const createdAtDate = new Date();
   const { rows } = await pool.query(
     `INSERT INTO reviews(gigId, reviewerId, reviewerImage, sellerId, review, rating, orderId, reviewType, reviewerUsername, country, createdAt)
@@ -60,18 +49,14 @@ const addReview = async (data: IReviewDocument): Promise<IReviewDocument> => {
     JSON.stringify(messageDetails),
     'Review details sent to order and users services'
   );
-  const result: IReviewDocument = Object.fromEntries(
-    Object.entries(rows[0]).map(([key, value]) => [objKeys[key] || key, value])
-  );
+  const result: IReviewDocument = Object.fromEntries(Object.entries(rows[0]).map(([key, value]) => [objKeys[key] || key, value]));
   return result;
 };
 
 const getReviewsByGigId = async (gigId: string): Promise<IReviewDocument[]> => {
   const reviews: QueryResult = await pool.query('SELECT * FROM reviews WHERE reviews.gigId = $1', [gigId]);
   const mappedResult: IReviewDocument[] = map(reviews.rows, (key) => {
-    return Object.fromEntries(
-      Object.entries(key).map(([key, value]) => [objKeys[key] || key, value])
-    );
+    return Object.fromEntries(Object.entries(key).map(([key, value]) => [objKeys[key] || key, value]));
   });
   return mappedResult;
 };
@@ -82,9 +67,7 @@ const getReviewsBySellerId = async (sellerId: string): Promise<IReviewDocument[]
     'seller-review'
   ]);
   const mappedResult: IReviewDocument[] = map(reviews.rows, (key) => {
-    return Object.fromEntries(
-      Object.entries(key).map(([key, value]) => [objKeys[key] || key, value])
-    );
+    return Object.fromEntries(Object.entries(key).map(([key, value]) => [objKeys[key] || key, value]));
   });
   return mappedResult;
 };

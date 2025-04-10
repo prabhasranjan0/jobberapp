@@ -2,7 +2,7 @@ import crypto from 'crypto';
 
 import { createAuthUser, getUserByUsernameOrEmail } from '@auth/services/auth.service';
 import { faker } from '@faker-js/faker';
-import { BadRequestError, IAuthDocument, firstLetterUppercase, lowerCase } from '@uzochukwueddie/jobber-shared';
+import { BadRequestError, IAuthDocument, firstLetterUppercase, lowerCase } from '@prabhasranjan0/jobber-share';
 import { Request, Response } from 'express';
 import { generateUsername } from 'unique-username-generator';
 import { v4 as uuidV4 } from 'uuid';
@@ -12,12 +12,12 @@ import { StatusCodes } from 'http-status-codes';
 export async function create(req: Request, res: Response): Promise<void> {
   const { count } = req.params;
   const usernames: string[] = [];
-  for(let i = 0; i < parseInt(count, 10); i++) {
+  for (let i = 0; i < parseInt(count, 10); i++) {
     const username: string = generateUsername('', 0, 12);
     usernames.push(firstLetterUppercase(username));
   }
 
-  for(let i = 0; i < usernames.length; i++) {
+  for (let i = 0; i < usernames.length; i++) {
     const username = usernames[i];
     const email = faker.internet.email();
     const password = 'qwerty';

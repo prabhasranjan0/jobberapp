@@ -21,6 +21,7 @@
   "dependencies": {
     "@elastic/elasticsearch": "^8.10.0",
     "@faker-js/faker": "^8.2.0",
+    "@prabhasranjan0/jobber-share": "^0.0.2",
     "amqplib": "^0.10.3",
     "cloudinary": "^1.41.0",
     "compression": "^1.7.4",
@@ -35,6 +36,7 @@
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.0",
+    "nodemon": "^3.1.9",
     "pino-pretty": "^10.2.3",
     "typescript": "^5.2.2",
     "typescript-transform-paths": "^3.4.6",

@@ -1,11 +1,11 @@
 import { config } from '@gig/config';
-import { winstonLogger } from '@uzochukwueddie/jobber-shared';
+import { winstonLogger } from '@prabhasranjan0/jobber-share';
 import { createClient } from 'redis';
 import { Logger } from 'winston';
 
 type RedisClient = ReturnType<typeof createClient>;
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'gigRedisConnection', 'debug');
-const client: RedisClient = createClient({ url: `${config.REDIS_HOST}`});
+const client: RedisClient = createClient({ url: `${config.REDIS_HOST}` });
 
 const redisConnect = async (): Promise<void> => {
   try {

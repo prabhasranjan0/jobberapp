@@ -1,5 +1,5 @@
 import { getAuthUserById, getAuthUserByVerificationToken, updateVerifyEmailField } from '@auth/services/auth.service';
-import { BadRequestError, IAuthDocument } from '@uzochukwueddie/jobber-shared';
+import { BadRequestError, IAuthDocument } from '@prabhasranjan0/jobber-share';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 

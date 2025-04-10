@@ -1,5 +1,5 @@
 import { config } from '@gateway/config';
-import { winstonLogger } from '@uzochukwueddie/jobber-shared';
+import { winstonLogger } from '@prabhasranjan0/jobber-share';
 import { createClient } from 'redis';
 import { Logger } from 'winston';
 
@@ -10,7 +10,7 @@ class RedisConnection {
   client: RedisClient;
 
   constructor() {
-    this.client = createClient({ url: `${config.REDIS_HOST}`});
+    this.client = createClient({ url: `${config.REDIS_HOST}` });
   }
 
   async redisConnect(): Promise<void> {
@@ -21,13 +21,13 @@ class RedisConnection {
     } catch (error) {
       log.log('error', 'GatewayService redisConnect() method error:', error);
     }
-  };
+  }
 
   private cacheError(): void {
     this.client.on('error', (error: unknown) => {
       log.error(error);
     });
-  };
+  }
 }
 
 export const redisConnection: RedisConnection = new RedisConnection();

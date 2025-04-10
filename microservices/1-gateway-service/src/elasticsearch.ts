@@ -1,4 +1,4 @@
-import { winstonLogger } from '@uzochukwueddie/jobber-shared';
+import { winstonLogger } from '@prabhasranjan0/jobber-share';
 import { Logger } from 'winston';
 import { config } from '@gateway/config';
 import { Client } from '@elastic/elasticsearch';
@@ -17,7 +17,7 @@ class ElasticSearch {
 
   public async checkConnection(): Promise<void> {
     let isConnected = false;
-    while(!isConnected) {
+    while (!isConnected) {
       log.info('GatewayService Connecting to ElasticSearch');
       try {
         const health: ClusterHealthResponse = await this.elasticSearchClient.cluster.health({});

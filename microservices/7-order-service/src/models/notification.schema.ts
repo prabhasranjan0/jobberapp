@@ -1,4 +1,4 @@
-import { IOrderNotifcation } from '@uzochukwueddie/jobber-shared';
+import { IOrderNotifcation } from '@prabhasranjan0/jobber-share';
 import { model, Model, Schema } from 'mongoose';
 
 const notificationSchema: Schema = new Schema({

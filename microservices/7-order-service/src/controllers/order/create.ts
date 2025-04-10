@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { config } from '@order/config';
 import { StatusCodes } from 'http-status-codes';
 import { orderSchema } from '@order/schemes/order';
-import { BadRequestError, IOrderDocument } from '@uzochukwueddie/jobber-shared';
+import { BadRequestError, IOrderDocument } from '@prabhasranjan0/jobber-share';
 import { createOrder } from '@order/services/order.service';
 
 const stripe: Stripe = new Stripe(config.STRIPE_API_KEY!, {
@@ -36,7 +36,7 @@ const intent = async (req: Request, res: Response): Promise<void> => {
       amount: Math.floor((req.body.price + serviceFee) * 100),
       currency: 'usd',
       customer: customerId,
-      automatic_payment_methods: { enabled: true },
+      automatic_payment_methods: { enabled: true }
     });
   }
   res.status(StatusCodes.CREATED).json({

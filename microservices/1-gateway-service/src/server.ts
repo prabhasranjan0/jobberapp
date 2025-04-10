@@ -1,7 +1,7 @@
 import http from 'http';
 
 import 'express-async-errors';
-import { CustomError, IErrorResponse, winstonLogger } from '@uzochukwueddie/jobber-shared';
+import { CustomError, IErrorResponse, winstonLogger } from '@prabhasranjan0/jobber-share';
 import { Application, Request, Response, json, urlencoded, NextFunction } from 'express';
 import { Logger } from 'winston';
 import cookieSession from 'cookie-session';
@@ -62,11 +62,13 @@ export class GatewayServer {
     );
     app.use(hpp());
     app.use(helmet());
-    app.use(cors({
-      origin: config.CLIENT_URL,
-      credentials: true,
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-    }));
+    app.use(
+      cors({
+        origin: config.CLIENT_URL,
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+      })
+    );
 
     app.use((req: Request, _res: Response, next: NextFunction) => {
       if (req.session?.jwt) {
@@ -100,7 +102,7 @@ export class GatewayServer {
     app.use('*', (req: Request, res: Response, next: NextFunction) => {
       const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
       log.log('error', `${fullUrl} endpoint does not exist.`, '');
-      res.status(StatusCodes.NOT_FOUND).json({ message: 'The endpoint called does not exist.'});
+      res.status(StatusCodes.NOT_FOUND).json({ message: 'The endpoint called does not exist.' });
       next();
     });
 
@@ -112,7 +114,9 @@ export class GatewayServer {
 
       if (isAxiosError(error)) {
         log.log('error', `GatewayService Axios Error - ${error?.response?.data?.comingFrom}:`, error);
-        res.status(error?.response?.data?.statusCode ?? DEFAULT_ERROR_CODE).json({ message: error?.response?.data?.message ?? 'Error occurred.' });
+        res
+          .status(error?.response?.data?.statusCode ?? DEFAULT_ERROR_CODE)
+          .json({ message: error?.response?.data?.message ?? 'Error occurred.' });
       }
 
       next();

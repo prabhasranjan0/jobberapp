@@ -1,5 +1,5 @@
 import { getConversation, getMessages, getUserConversationList, getUserMessages } from '@chat/services/message.service';
-import { IConversationDocument, IMessageDocument } from '@uzochukwueddie/jobber-shared';
+import { IConversationDocument, IMessageDocument } from '@prabhasranjan0/jobber-share';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
@@ -27,9 +27,4 @@ const userMessages = async (req: Request, res: Response): Promise<void> => {
   res.status(StatusCodes.OK).json({ message: 'Chat messages', messages });
 };
 
-export {
-  conversation,
-  messages,
-  conversationList,
-  userMessages
-};
+export { conversation, messages, conversationList, userMessages };

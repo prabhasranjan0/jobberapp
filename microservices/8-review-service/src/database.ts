@@ -1,4 +1,4 @@
-import { winstonLogger } from '@uzochukwueddie/jobber-shared';
+import { winstonLogger } from '@prabhasranjan0/jobber-share';
 import { Logger } from 'winston';
 import { config } from '@review/config';
 import { Pool } from 'pg';
@@ -11,11 +11,12 @@ const pool: Pool = new Pool({
   password: `${config.DATABASE_PASSWORD}`,
   port: 5432,
   database: `${config.DATABASE_NAME}`,
-  ...(config.NODE_ENV !== 'development' && config.CLUSTER_TYPE === 'AWS' && {
-    ssl: {
-      rejectUnauthorized: false
-    }
-  })
+  ...(config.NODE_ENV !== 'development' &&
+    config.CLUSTER_TYPE === 'AWS' && {
+      ssl: {
+        rejectUnauthorized: false
+      }
+    })
 });
 
 pool.on('error', (error: Error) => {

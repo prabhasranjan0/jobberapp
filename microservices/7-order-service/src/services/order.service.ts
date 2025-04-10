@@ -9,7 +9,7 @@ import {
   IOrderMessage,
   IReviewMessageDetails,
   lowerCase
-} from '@uzochukwueddie/jobber-shared';
+} from '@prabhasranjan0/jobber-share';
 import { sendNotification } from '@order/services/notification.service';
 
 export const getOrderByOrderId = async (orderId: string): Promise<IOrderDocument> => {

@@ -7,7 +7,7 @@ import { AxiosResponse } from 'axios';
 import { CurrentUser } from '@gateway/controllers/auth/current-user';
 import { GatewayCache } from '@gateway/redis/gateway.cache';
 
-jest.mock('@uzochukwueddie/jobber-shared');
+jest.mock('@prabhasranjan0/jobber-share');
 jest.mock('@gateway/services/api/auth.service');
 jest.mock('@gateway/redis/gateway.cache');
 jest.mock('@gateway/server');
@@ -36,7 +36,9 @@ describe('CurrentUser', () => {
     it('should return authenticated user', async () => {
       const req: Request = authMockRequest({}, { username: USERNAME, password: PASSWORD }, authUserPayload) as unknown as Request;
       const res: Response = authMockResponse();
-      jest.spyOn(authService, 'getCurrentUser').mockResolvedValue({data: { message: 'Current user data', user: authMock }} as unknown as AxiosResponse);
+      jest
+        .spyOn(authService, 'getCurrentUser')
+        .mockResolvedValue({ data: { message: 'Current user data', user: authMock } } as unknown as AxiosResponse);
 
       await CurrentUser.prototype.read(req, res);
       expect(res.status).toHaveBeenCalledWith(200);
@@ -51,7 +53,9 @@ describe('CurrentUser', () => {
     it('should return correct response', async () => {
       const req: Request = authMockRequest({}, { username: USERNAME, password: PASSWORD }, authUserPayload) as unknown as Request;
       const res: Response = authMockResponse();
-      jest.spyOn(authService, 'resendEmail').mockResolvedValue({data: { message: 'Email sent successfully.', user: authMock }} as unknown as AxiosResponse);
+      jest
+        .spyOn(authService, 'resendEmail')
+        .mockResolvedValue({ data: { message: 'Email sent successfully.', user: authMock } } as unknown as AxiosResponse);
 
       await CurrentUser.prototype.resendEmail(req, res);
       expect(res.status).toHaveBeenCalledWith(200);
@@ -78,7 +82,9 @@ describe('CurrentUser', () => {
 
   describe('removeLoggedInUser method', () => {
     it('should return correct response', async () => {
-      const req: Request = authMockRequest({}, { username: USERNAME, password: PASSWORD }, authUserPayload, { username: 'Manny' }) as unknown as Request;
+      const req: Request = authMockRequest({}, { username: USERNAME, password: PASSWORD }, authUserPayload, {
+        username: 'Manny'
+      }) as unknown as Request;
       const res: Response = authMockResponse();
       jest.spyOn(GatewayCache.prototype, 'removeLoggedInUserFromCache').mockResolvedValue(['Manny']);
       jest.spyOn(socketServer.socketIO, 'emit');

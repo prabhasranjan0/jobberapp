@@ -1,6 +1,6 @@
 import { config } from '@gateway/config';
 import { GatewayCache } from '@gateway/redis/gateway.cache';
-import { IMessageDocument, IOrderDocument, IOrderNotifcation, winstonLogger } from '@uzochukwueddie/jobber-shared';
+import { IMessageDocument, IOrderDocument, IOrderNotifcation, winstonLogger } from '@prabhasranjan0/jobber-share';
 import { Server, Socket } from 'socket.io';
 import { io, Socket as SocketClient } from 'socket.io-client';
 import { Logger } from 'winston';
@@ -100,4 +100,4 @@ export class SocketIOAppHandler {
       this.io.emit('order notification', order, notification);
     });
   }
-};
+}

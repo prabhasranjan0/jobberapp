@@ -2,10 +2,10 @@ import { Request, Response } from 'express';
 import { authMock, authMockRequest, authMockResponse, authUserPayload } from '@auth/controllers/test/mocks/auth.mock';
 import { read, resendEmail } from '@auth/controllers/current-user';
 import * as auth from '@auth/services/auth.service';
-import * as helper from '@uzochukwueddie/jobber-shared';
+import * as helper from '@prabhasranjan0/jobber-share';
 import { Sequelize } from 'sequelize';
 
-jest.mock('@uzochukwueddie/jobber-shared');
+jest.mock('@prabhasranjan0/jobber-share');
 jest.mock('@auth/services/auth.service');
 jest.mock('@auth/queues/auth.producer');
 jest.mock('@elastic/elasticsearch');
@@ -18,7 +18,7 @@ let mockConnection: Sequelize;
 describe('CurrentUser', () => {
   beforeEach(async () => {
     jest.resetAllMocks();
-    mockConnection = new Sequelize(process.env.MYSQL_DB!,  {
+    mockConnection = new Sequelize(process.env.MYSQL_DB!, {
       dialect: 'mysql',
       logging: false,
       dialectOptions: {

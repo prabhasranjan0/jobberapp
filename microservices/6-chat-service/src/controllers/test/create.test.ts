@@ -2,12 +2,12 @@
 import { Request, Response } from 'express';
 import * as chatService from '@chat/services/message.service';
 import { messageSchema } from '@chat/schemes/message';
-import * as helper from '@uzochukwueddie/jobber-shared';
+import * as helper from '@prabhasranjan0/jobber-share';
 import { chatMockRequest, chatMockResponse, authUserPayload, messageDocument } from '@chat/controllers/test/mocks/chat.mock';
 import { message } from '@chat/controllers/create';
 
 jest.mock('@chat/services/message.service');
-jest.mock('@uzochukwueddie/jobber-shared');
+jest.mock('@prabhasranjan0/jobber-share');
 jest.mock('@chat/schemes/message');
 jest.mock('@elastic/elasticsearch');
 
@@ -43,7 +43,7 @@ describe('Chat Controller', () => {
     it('should throw file upload error', async () => {
       const req: Request = chatMockRequest({}, messageDocument, authUserPayload) as unknown as Request;
       const res: Response = chatMockResponse();
-      jest.spyOn(messageSchema, 'validate').mockImplementation((): any => Promise.resolve({error: {}}));
+      jest.spyOn(messageSchema, 'validate').mockImplementation((): any => Promise.resolve({ error: {} }));
       jest.spyOn(helper, 'uploads').mockImplementation((): any => Promise.resolve({ public_id: '' }));
 
       message(req, res).catch(() => {
@@ -55,7 +55,7 @@ describe('Chat Controller', () => {
       messageDocument.hasConversationId = false;
       const req: Request = chatMockRequest({}, messageDocument, authUserPayload) as unknown as Request;
       const res: Response = chatMockResponse();
-      jest.spyOn(messageSchema, 'validate').mockImplementation((): any => Promise.resolve({error: {}}));
+      jest.spyOn(messageSchema, 'validate').mockImplementation((): any => Promise.resolve({ error: {} }));
       jest.spyOn(helper, 'uploads').mockImplementation((): any => Promise.resolve({ public_id: '123456' }));
       jest.spyOn(chatService, 'createConversation');
 
@@ -67,7 +67,7 @@ describe('Chat Controller', () => {
       messageDocument.hasConversationId = true;
       const req: Request = chatMockRequest({}, messageDocument, authUserPayload) as unknown as Request;
       const res: Response = chatMockResponse();
-      jest.spyOn(messageSchema, 'validate').mockImplementation((): any => Promise.resolve({error: {}}));
+      jest.spyOn(messageSchema, 'validate').mockImplementation((): any => Promise.resolve({ error: {} }));
       jest.spyOn(helper, 'uploads').mockImplementation((): any => Promise.resolve({ public_id: '123456' }));
       jest.spyOn(chatService, 'addMessage');
 
@@ -78,7 +78,7 @@ describe('Chat Controller', () => {
     it('should return correct json response', async () => {
       const req: Request = chatMockRequest({}, messageDocument, authUserPayload) as unknown as Request;
       const res: Response = chatMockResponse();
-      jest.spyOn(messageSchema, 'validate').mockImplementation((): any => Promise.resolve({error: {}}));
+      jest.spyOn(messageSchema, 'validate').mockImplementation((): any => Promise.resolve({ error: {} }));
       jest.spyOn(helper, 'uploads').mockImplementation((): any => Promise.resolve({ public_id: '123456' }));
 
       await message(req, res);

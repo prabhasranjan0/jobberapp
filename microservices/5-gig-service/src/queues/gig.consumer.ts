@@ -1,5 +1,5 @@
 import { config } from '@gig/config';
-import { winstonLogger } from '@uzochukwueddie/jobber-shared';
+import { winstonLogger } from '@prabhasranjan0/jobber-share';
 import { Channel, ConsumeMessage, Replies } from 'amqplib';
 import { Logger } from 'winston';
 import { createConnection } from '@gig/queues/connection';

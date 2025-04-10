@@ -1,5 +1,5 @@
 import { markManyMessagesAsRead, markMessageAsRead, updateOffer } from '@chat/services/message.service';
-import { IMessageDocument } from '@uzochukwueddie/jobber-shared';
+import { IMessageDocument } from '@prabhasranjan0/jobber-share';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 

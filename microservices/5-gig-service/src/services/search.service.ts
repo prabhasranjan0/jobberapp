@@ -1,6 +1,6 @@
 import { SearchResponse } from '@elastic/elasticsearch/lib/api/types';
 import { elasticSearchClient } from '@gig/elasticsearch';
-import { IHitsTotal, IPaginateProps, IQueryList, ISearchResult } from '@uzochukwueddie/jobber-shared';
+import { IHitsTotal, IPaginateProps, IQueryList, ISearchResult } from '@prabhasranjan0/jobber-share';
 
 const gigsSearchBySellerId = async (searchQuery: string, active: boolean): Promise<ISearchResult> => {
   const queryList: IQueryList[] = [
@@ -114,7 +114,7 @@ const gigsSearchByCategory = async (searchQuery: string): Promise<ISearchResult>
           }
         ]
       }
-    },
+    }
   });
   const total: IHitsTotal = result.hits.total as IHitsTotal;
   return {
@@ -155,7 +155,7 @@ const getTopRatedGigsByCategory = async (searchQuery: string): Promise<ISearchRe
         filter: {
           script: {
             script: {
-              source: 'doc[\'ratingSum\'].value != 0 && (doc[\'ratingSum\'].value / doc[\'ratingsCount\'].value == params[\'threshold\'])',
+              source: "doc['ratingSum'].value != 0 && (doc['ratingSum'].value / doc['ratingsCount'].value == params['threshold'])",
               lang: 'painless',
               params: {
                 threshold: 5
@@ -181,10 +181,4 @@ const getTopRatedGigsByCategory = async (searchQuery: string): Promise<ISearchRe
   };
 };
 
-export {
-  gigsSearchBySellerId,
-  gigsSearch,
-  gigsSearchByCategory,
-  getMoreGigsLikeThis,
-  getTopRatedGigsByCategory
-};
+export { gigsSearchBySellerId, gigsSearch, gigsSearchByCategory, getMoreGigsLikeThis, getTopRatedGigsByCategory };

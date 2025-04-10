@@ -2,7 +2,7 @@ import { ConversationModel } from '@chat/models/conversation.schema';
 import { MessageModel } from '@chat/models/message.schema';
 import { publishDirectMessage } from '@chat/queues/message.producer';
 import { chatChannel, socketIOChatObject } from '@chat/server';
-import { IConversationDocument, IMessageDetails, IMessageDocument, lowerCase } from '@uzochukwueddie/jobber-shared';
+import { IConversationDocument, IMessageDetails, IMessageDocument, lowerCase } from '@prabhasranjan0/jobber-share';
 
 const createConversation = async (conversationId: string, sender: string, receiver: string): Promise<void> => {
   await ConversationModel.create({
@@ -13,7 +13,7 @@ const createConversation = async (conversationId: string, sender: string, receiv
 };
 
 const addMessage = async (data: IMessageDocument): Promise<IMessageDocument> => {
-  const message: IMessageDocument = await MessageModel.create(data) as IMessageDocument;
+  const message: IMessageDocument = (await MessageModel.create(data)) as IMessageDocument;
   if (data.hasOffer) {
     const emailMessageDetails: IMessageDetails = {
       sender: data.senderUsername,
@@ -42,7 +42,7 @@ const getConversation = async (sender: string, receiver: string): Promise<IConve
   const query = {
     $or: [
       { senderUsername: sender, receiverUsername: receiver },
-      { senderUsername: receiver, receiverUsername: sender },
+      { senderUsername: receiver, receiverUsername: sender }
     ]
   };
   const conversation: IConversationDocument[] = await ConversationModel.aggregate([{ $match: query }]);
@@ -51,17 +51,14 @@ const getConversation = async (sender: string, receiver: string): Promise<IConve
 
 const getUserConversationList = async (username: string): Promise<IMessageDocument[]> => {
   const query = {
-    $or: [
-      { senderUsername: username },
-      { receiverUsername: username },
-    ]
+    $or: [{ senderUsername: username }, { receiverUsername: username }]
   };
   const messages: IMessageDocument[] = await MessageModel.aggregate([
     { $match: query },
     {
       $group: {
         _id: '$conversationId',
-        result: { $top: { output: '$$ROOT', sortBy: { createdAt: -1 }}}
+        result: { $top: { output: '$$ROOT', sortBy: { createdAt: -1 } } }
       }
     },
     {
@@ -90,26 +87,23 @@ const getMessages = async (sender: string, receiver: string): Promise<IMessageDo
   const query = {
     $or: [
       { senderUsername: sender, receiverUsername: receiver },
-      { senderUsername: receiver, receiverUsername: sender },
+      { senderUsername: receiver, receiverUsername: sender }
     ]
   };
-  const messages: IMessageDocument[] = await MessageModel.aggregate([
-    { $match: query },
-    { $sort: { createdAt: 1 }}
-  ]);
+  const messages: IMessageDocument[] = await MessageModel.aggregate([{ $match: query }, { $sort: { createdAt: 1 } }]);
   return messages;
 };
 
 const getUserMessages = async (messageConversationId: string): Promise<IMessageDocument[]> => {
   const messages: IMessageDocument[] = await MessageModel.aggregate([
     { $match: { conversationId: messageConversationId } },
-    { $sort: { createdAt: 1 }}
+    { $sort: { createdAt: 1 } }
   ]);
   return messages;
 };
 
 const updateOffer = async (messageId: string, type: string): Promise<IMessageDocument> => {
-  const message: IMessageDocument = await MessageModel.findOneAndUpdate(
+  const message: IMessageDocument = (await MessageModel.findOneAndUpdate(
     { _id: messageId },
     {
       $set: {
@@ -117,12 +111,12 @@ const updateOffer = async (messageId: string, type: string): Promise<IMessageDoc
       }
     },
     { new: true }
-  ) as IMessageDocument;
+  )) as IMessageDocument;
   return message;
 };
 
 const markMessageAsRead = async (messageId: string): Promise<IMessageDocument> => {
-  const message: IMessageDocument = await MessageModel.findOneAndUpdate(
+  const message: IMessageDocument = (await MessageModel.findOneAndUpdate(
     { _id: messageId },
     {
       $set: {
@@ -130,21 +124,21 @@ const markMessageAsRead = async (messageId: string): Promise<IMessageDocument> =
       }
     },
     { new: true }
-  ) as IMessageDocument;
+  )) as IMessageDocument;
   socketIOChatObject.emit('message updated', message);
   return message;
 };
 
 const markManyMessagesAsRead = async (receiver: string, sender: string, messageId: string): Promise<IMessageDocument> => {
-  await MessageModel.updateMany(
+  (await MessageModel.updateMany(
     { senderUsername: sender, receiverUsername: receiver, isRead: false },
     {
       $set: {
         isRead: true
       }
-    },
-  ) as IMessageDocument;
-  const message: IMessageDocument = await MessageModel.findOne({ _id: messageId }).exec() as IMessageDocument;
+    }
+  )) as IMessageDocument;
+  const message: IMessageDocument = (await MessageModel.findOne({ _id: messageId }).exec()) as IMessageDocument;
   socketIOChatObject.emit('message updated', message);
   return message;
 };

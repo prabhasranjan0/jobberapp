@@ -3,7 +3,7 @@ import { randomInt } from 'crypto';
 import { AuthModel } from '@auth/models/auth.schema';
 import { loginSchema } from '@auth/schemes/signin';
 import { getUserByEmail, getUserByUsername, signToken, updateUserOTP } from '@auth/services/auth.service';
-import { BadRequestError, IAuthDocument, IEmailMessageDetails, isEmail } from '@uzochukwueddie/jobber-shared';
+import { BadRequestError, IAuthDocument, IEmailMessageDetails, isEmail } from '@prabhasranjan0/jobber-share';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { omit } from 'lodash';
@@ -33,7 +33,7 @@ export async function read(req: Request, res: Response): Promise<void> {
   if (browserName !== existingUser.browserName || deviceType !== existingUser.deviceType) {
     // min 6 digits and max 6 digits
     // 100000 - 999999
-    const otpCode = randomInt(10**5, 10**6-1);
+    const otpCode = randomInt(10 ** 5, 10 ** 6 - 1);
     // send email with otp
     const messageDetails: IEmailMessageDetails = {
       receiverEmail: existingUser.email,

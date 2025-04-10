@@ -4,7 +4,7 @@ import { authUserPayload, reviewDocument, reviewMockRequest, reviewMockResponse 
 import { review } from '@review/controllers/create';
 
 jest.mock('@review/services/review.service');
-jest.mock('@uzochukwueddie/jobber-shared');
+jest.mock('@prabhasranjan0/jobber-share');
 jest.mock('@review/queues/connection');
 jest.mock('@elastic/elasticsearch');
 

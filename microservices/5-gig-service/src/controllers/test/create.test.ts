@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { gigCreateSchema } from '@gig/schemes/gig';
-import { BadRequestError } from '@uzochukwueddie/jobber-shared';
+import { BadRequestError } from '@prabhasranjan0/jobber-share';
 import { Request, Response } from 'express';
 import { gigCreate } from '@gig/controllers/create';
-import * as helper from '@uzochukwueddie/jobber-shared';
+import * as helper from '@prabhasranjan0/jobber-share';
 import * as gigService from '@gig/services/gig.service';
 import { authUserPayload, gigMockRequest, gigMockResponse, sellerGig } from '@gig/controllers/test/mocks/gig.mock';
 
 jest.mock('@gig/services/gig.service');
-jest.mock('@uzochukwueddie/jobber-shared');
-jest.mock('@uzochukwueddie/jobber-shared');
+jest.mock('@prabhasranjan0/jobber-share');
+jest.mock('@prabhasranjan0/jobber-share');
 jest.mock('@gig/schemes/gig');
 jest.mock('@gig/elasticsearch');
 jest.mock('@elastic/elasticsearch');
@@ -45,7 +45,7 @@ describe('Gig Controller', () => {
     it('should throw file upload error', () => {
       const req: Request = gigMockRequest({}, sellerGig, authUserPayload) as unknown as Request;
       const res: Response = gigMockResponse();
-      jest.spyOn(gigCreateSchema, 'validate').mockImplementation((): any => Promise.resolve({error: {}}));
+      jest.spyOn(gigCreateSchema, 'validate').mockImplementation((): any => Promise.resolve({ error: {} }));
       jest.spyOn(helper, 'uploads').mockImplementation((): any => Promise.resolve({ public_id: '' }));
 
       gigCreate(req, res).catch(() => {
@@ -56,14 +56,15 @@ describe('Gig Controller', () => {
     it('should create a new gig and return the correct response', async () => {
       const req: Request = gigMockRequest({}, sellerGig, authUserPayload) as unknown as Request;
       const res: Response = gigMockResponse();
-      jest.spyOn(gigCreateSchema, 'validate').mockImplementation((): any => Promise.resolve({error: {}}));
+      jest.spyOn(gigCreateSchema, 'validate').mockImplementation((): any => Promise.resolve({ error: {} }));
       jest.spyOn(helper, 'uploads').mockImplementation((): any => Promise.resolve({ public_id: '123456' }));
       jest.spyOn(gigService, 'createGig').mockResolvedValue(sellerGig);
 
       await gigCreate(req, res);
       expect(res.status).toHaveBeenCalledWith(201);
       expect(res.json).toHaveBeenCalledWith({
-        message: 'Gig created successfully.', gig: sellerGig
+        message: 'Gig created successfully.',
+        gig: sellerGig
       });
     });
   });

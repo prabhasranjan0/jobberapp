@@ -1,4 +1,4 @@
-import { IOrderDocument } from '@uzochukwueddie/jobber-shared';
+import { IOrderDocument } from '@prabhasranjan0/jobber-share';
 import { model, Model, Schema } from 'mongoose';
 
 const orderSchema: Schema = new Schema(

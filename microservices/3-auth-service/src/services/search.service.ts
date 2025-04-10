@@ -1,6 +1,6 @@
 import { elasticSearchClient, getDocumentById } from '@auth/elasticsearch';
 import { SearchResponse } from '@elastic/elasticsearch/lib/api/types';
-import { IHitsTotal, IPaginateProps, IQueryList, ISearchResult, ISellerGig } from '@uzochukwueddie/jobber-shared';
+import { IHitsTotal, IPaginateProps, IQueryList, ISearchResult, ISellerGig } from '@prabhasranjan0/jobber-share';
 
 export async function gigById(index: string, gigId: string): Promise<ISellerGig> {
   const gig: ISellerGig = await getDocumentById(index, gigId);

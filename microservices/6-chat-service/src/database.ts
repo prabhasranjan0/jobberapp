@@ -1,4 +1,4 @@
-import { winstonLogger } from '@uzochukwueddie/jobber-shared';
+import { winstonLogger } from '@prabhasranjan0/jobber-share';
 import { Logger } from 'winston';
 import { config } from '@chat/config';
 import mongoose from 'mongoose';

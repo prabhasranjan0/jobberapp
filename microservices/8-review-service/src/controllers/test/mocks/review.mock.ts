@@ -1,4 +1,4 @@
-import { IAuthPayload, IReviewDocument } from '@uzochukwueddie/jobber-shared';
+import { IAuthPayload, IReviewDocument } from '@prabhasranjan0/jobber-share';
 import { Response } from 'express';
 
 export const reviewMockRequest = (sessionData: IJWT, body: IReviewDocument, currentUser?: IAuthPayload | null, params?: IParams) => ({
@@ -28,7 +28,7 @@ export const authUserPayload: IAuthPayload = {
 
 export interface IParams {
   username?: string;
-};
+}
 
 export const reviewDocument: IReviewDocument = {
   _id: '60263f14648fed5246e3452w',

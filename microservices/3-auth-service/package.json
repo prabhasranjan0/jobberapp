@@ -21,6 +21,7 @@
   "dependencies": {
     "@elastic/elasticsearch": "^8.10.0",
     "@faker-js/faker": "^8.2.0",
+    "@prabhasranjan0/jobber-share": "^0.0.2",
     "amqplib": "^0.10.3",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.41.0",
@@ -36,6 +37,7 @@
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.6.3",
+    "nodemon": "^3.1.9",
     "pino-pretty": "^10.2.3",
     "sequelize": "^6.34.0",
     "typescript": "^5.2.2",

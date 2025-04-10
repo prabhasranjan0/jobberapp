@@ -1,7 +1,7 @@
 import http from 'http';
 
 import 'express-async-errors';
-import { CustomError, IAuthPayload, IErrorResponse, winstonLogger } from '@uzochukwueddie/jobber-shared';
+import { CustomError, IAuthPayload, IErrorResponse, winstonLogger } from '@prabhasranjan0/jobber-share';
 import { Logger } from 'winston';
 import { config } from '@review/config';
 import { Application, Request, Response, NextFunction, json, urlencoded } from 'express';
@@ -61,7 +61,7 @@ const routesMiddleware = (app: Application): void => {
 };
 
 const startQueues = async (): Promise<void> => {
-  reviewChannel = await createConnection() as Channel;
+  reviewChannel = (await createConnection()) as Channel;
 };
 
 const startElasticSearch = (): void => {

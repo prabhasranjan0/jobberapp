@@ -4,7 +4,7 @@ import { consumeAuthEmailMessages, consumeOrderEmailMessages } from '@notificati
 
 jest.mock('@notifications/queues/connection');
 jest.mock('amqplib');
-jest.mock('@uzochukwueddie/jobber-shared');
+jest.mock('@prabhasranjan0/jobber-share');
 
 describe('Email Consumer', () => {
   beforeEach(() => {
@@ -22,10 +22,10 @@ describe('Email Consumer', () => {
         publish: jest.fn(),
         assertQueue: jest.fn(),
         bindQueue: jest.fn(),
-        consume: jest.fn(),
+        consume: jest.fn()
       };
       jest.spyOn(channel, 'assertExchange');
-      jest.spyOn(channel, 'assertQueue').mockReturnValue({ queue: 'auth-email-queue', messageCount: 0, consumerCount: 0});
+      jest.spyOn(channel, 'assertQueue').mockReturnValue({ queue: 'auth-email-queue', messageCount: 0, consumerCount: 0 });
       jest.spyOn(connection, 'createConnection').mockReturnValue(channel as never);
       const connectionChannel: amqp.Channel | undefined = await connection.createConnection();
       await consumeAuthEmailMessages(connectionChannel!);
@@ -43,10 +43,10 @@ describe('Email Consumer', () => {
         publish: jest.fn(),
         assertQueue: jest.fn(),
         bindQueue: jest.fn(),
-        consume: jest.fn(),
+        consume: jest.fn()
       };
       jest.spyOn(channel, 'assertExchange');
-      jest.spyOn(channel, 'assertQueue').mockReturnValue({ queue: 'order-email-queue', messageCount: 0, consumerCount: 0});
+      jest.spyOn(channel, 'assertQueue').mockReturnValue({ queue: 'order-email-queue', messageCount: 0, consumerCount: 0 });
       jest.spyOn(connection, 'createConnection').mockReturnValue(channel as never);
       const connectionChannel: amqp.Channel | undefined = await connection.createConnection();
       await consumeOrderEmailMessages(connectionChannel!);

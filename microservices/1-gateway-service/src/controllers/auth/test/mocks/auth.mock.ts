@@ -1,4 +1,4 @@
-import { IAuthDocument, IAuthPayload } from '@uzochukwueddie/jobber-shared';
+import { IAuthDocument, IAuthPayload } from '@prabhasranjan0/jobber-share';
 import { Response } from 'express';
 
 export const authMockRequest = (sessionData: IJWT, body: IAuthMock, currentUser?: IAuthPayload | null, params?: unknown) => ({
@@ -44,5 +44,5 @@ export const authMock: IAuthDocument = {
   emailVerified: 1,
   createdAt: '2023-12-19T07:42:24.431Z',
   comparePassword: () => {},
-  hashPassword: () => false,
+  hashPassword: () => false
 } as unknown as IAuthDocument;

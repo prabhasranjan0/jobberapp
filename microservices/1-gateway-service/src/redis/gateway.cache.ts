@@ -1,5 +1,5 @@
 import { config } from '@gateway/config';
-import { winstonLogger } from '@uzochukwueddie/jobber-shared';
+import { winstonLogger } from '@prabhasranjan0/jobber-share';
 import { Logger } from 'winston';
 import { createClient } from 'redis';
 
@@ -10,7 +10,7 @@ export class GatewayCache {
   client: RedisClient;
 
   constructor() {
-    this.client = createClient({ url: `${config.REDIS_HOST}`});
+    this.client = createClient({ url: `${config.REDIS_HOST}` });
   }
 
   public async saveUserSelectedCategory(key: string, value: string): Promise<void> {

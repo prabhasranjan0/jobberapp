@@ -1,6 +1,6 @@
 import { gigUpdateSchema } from '@gig/schemes/gig';
 import { updateActiveGigProp, updateGig } from '@gig/services/gig.service';
-import { BadRequestError, ISellerGig, isDataURL, uploads } from '@uzochukwueddie/jobber-shared';
+import { BadRequestError, ISellerGig, isDataURL, uploads } from '@prabhasranjan0/jobber-share';
 import { UploadApiResponse } from 'cloudinary';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
@@ -13,7 +13,7 @@ const gigUpdate = async (req: Request, res: Response): Promise<void> => {
   const isDataUrl = isDataURL(req.body.coverImage);
   let coverImage = '';
   if (isDataUrl) {
-    const result: UploadApiResponse = await uploads(req.body.coverImage) as UploadApiResponse;
+    const result: UploadApiResponse = (await uploads(req.body.coverImage)) as UploadApiResponse;
     if (!result.public_id) {
       throw new BadRequestError('File upload error. Try again.', 'Update gig() method');
     }

@@ -1,6 +1,5 @@
-
 import { gigsSearch } from '@gig/services/search.service';
-import { IPaginateProps, ISearchResult, ISellerGig } from '@uzochukwueddie/jobber-shared';
+import { IPaginateProps, ISearchResult, ISellerGig } from '@prabhasranjan0/jobber-share';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { sortBy } from 'lodash';
@@ -14,9 +13,9 @@ const gigs = async (req: Request, res: Response): Promise<void> => {
     paginate,
     `${req.query.delivery_time}`,
     parseInt(`${req.query.minprice}`),
-    parseInt(`${req.query.maxprice}`),
+    parseInt(`${req.query.maxprice}`)
   );
-  for(const item of gigs.hits) {
+  for (const item of gigs.hits) {
     resultHits.push(item._source as ISellerGig);
   }
   if (type === 'backward') {

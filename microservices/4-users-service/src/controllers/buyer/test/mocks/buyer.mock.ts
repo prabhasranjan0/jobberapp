@@ -1,4 +1,4 @@
-import { IAuthPayload, IBuyerDocument } from '@uzochukwueddie/jobber-shared';
+import { IAuthPayload, IBuyerDocument } from '@prabhasranjan0/jobber-share';
 import { Response } from 'express';
 
 export const buyerMockRequest = (sessionData: IJWT, currentUser?: IAuthPayload | null, params?: IParams) => ({
@@ -37,5 +37,5 @@ export const buyerDocument: IBuyerDocument = {
   profilePicture: '',
   isSeller: false,
   purchasedGigs: [],
-  createdAt: '2023-12-19T07:42:24.431Z',
+  createdAt: '2023-12-19T07:42:24.431Z'
 };

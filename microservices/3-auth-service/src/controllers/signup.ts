@@ -2,7 +2,14 @@ import crypto from 'crypto';
 
 import { signupSchema } from '@auth/schemes/signup';
 import { createAuthUser, getUserByUsernameOrEmail, signToken } from '@auth/services/auth.service';
-import { BadRequestError, IAuthDocument, IEmailMessageDetails, firstLetterUppercase, lowerCase, uploads } from '@uzochukwueddie/jobber-shared';
+import {
+  BadRequestError,
+  IAuthDocument,
+  IEmailMessageDetails,
+  firstLetterUppercase,
+  lowerCase,
+  uploads
+} from '@prabhasranjan0/jobber-share';
 import { Request, Response } from 'express';
 import { v4 as uuidV4 } from 'uuid';
 import { UploadApiResponse } from 'cloudinary';
@@ -23,7 +30,7 @@ export async function create(req: Request, res: Response): Promise<void> {
   }
 
   const profilePublicId = uuidV4();
-  const uploadResult: UploadApiResponse = await uploads(profilePicture, `${profilePublicId}`, true, true) as UploadApiResponse;
+  const uploadResult: UploadApiResponse = (await uploads(profilePicture, `${profilePublicId}`, true, true)) as UploadApiResponse;
   if (!uploadResult.public_id) {
     throw new BadRequestError('File upload error. Try again', 'SignUp create() method error');
   }
@@ -40,7 +47,7 @@ export async function create(req: Request, res: Response): Promise<void> {
     browserName,
     deviceType
   } as IAuthDocument;
-  const result: IAuthDocument = await createAuthUser(authData) as IAuthDocument;
+  const result: IAuthDocument = (await createAuthUser(authData)) as IAuthDocument;
   const verificationLink = `${config.CLIENT_URL}/confirm_email?v_token=${authData.emailVerificationToken}`;
   const messageDetails: IEmailMessageDetails = {
     receiverEmail: result.email,

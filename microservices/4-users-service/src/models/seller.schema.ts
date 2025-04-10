@@ -1,4 +1,4 @@
-import { ISellerDocument } from '@uzochukwueddie/jobber-shared';
+import { ISellerDocument } from '@prabhasranjan0/jobber-share';
 import { Model, Schema, model } from 'mongoose';
 
 const sellerSchema: Schema = new Schema(
@@ -14,18 +14,18 @@ const sellerSchema: Schema = new Schema(
     languages: [
       {
         language: { type: String, required: true },
-        level: { type: String, required: true },
+        level: { type: String, required: true }
       }
     ],
     skills: [{ type: String, required: true }],
     ratingsCount: { type: Number, default: 0 },
     ratingSum: { type: Number, default: 0 },
     ratingCategories: {
-      five: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 }},
-      four: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 }},
-      three: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 }},
-      two: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 }},
-      one: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 }},
+      five: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 } },
+      four: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 } },
+      three: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 } },
+      two: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 } },
+      one: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 } }
     },
     responseTime: { type: Number, default: 0 },
     recentDelivery: { type: Date, default: '' },
@@ -36,7 +36,7 @@ const sellerSchema: Schema = new Schema(
         startDate: { type: String, default: '' },
         endDate: { type: String, default: '' },
         description: { type: String, default: '' },
-        currentlyWorkingHere: { type: Boolean, default: false },
+        currentlyWorkingHere: { type: Boolean, default: false }
       }
     ],
     education: [
@@ -45,7 +45,7 @@ const sellerSchema: Schema = new Schema(
         university: { type: String, default: '' },
         title: { type: String, default: '' },
         major: { type: String, default: '' },
-        year: { type: String, default: '' },
+        year: { type: String, default: '' }
       }
     ],
     socialLinks: [{ type: String, default: '' }],
@@ -53,7 +53,7 @@ const sellerSchema: Schema = new Schema(
       {
         name: { type: String },
         from: { type: String },
-        year: { type: Number },
+        year: { type: Number }
       }
     ],
     ongoingJobs: { type: Number, default: 0 },

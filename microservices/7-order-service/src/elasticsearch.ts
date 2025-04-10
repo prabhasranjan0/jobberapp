@@ -1,7 +1,7 @@
 import { Client } from '@elastic/elasticsearch';
 import { ClusterHealthResponse } from '@elastic/elasticsearch/lib/api/types';
 import { config } from '@order/config';
-import { winstonLogger } from '@uzochukwueddie/jobber-shared';
+import { winstonLogger } from '@prabhasranjan0/jobber-share';
 import { Logger } from 'winston';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'orderElasticSearchServer', 'debug');
@@ -24,6 +24,4 @@ const checkConnection = async (): Promise<void> => {
   }
 };
 
-export {
-  checkConnection
-};
+export { checkConnection };

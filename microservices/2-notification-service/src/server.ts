@@ -1,7 +1,7 @@
 import 'express-async-errors';
 import http from 'http';
 
-import { winstonLogger } from '@uzochukwueddie/jobber-shared';
+import { winstonLogger } from '@prabhasranjan0/jobber-share';
 import { Logger } from 'winston';
 import { config } from '@notifications/config';
 import { Application } from 'express';
@@ -22,7 +22,7 @@ export function start(app: Application): void {
 }
 
 async function startQueues(): Promise<void> {
-  const emailChannel: Channel = await createConnection() as Channel;
+  const emailChannel: Channel = (await createConnection()) as Channel;
   await consumeAuthEmailMessages(emailChannel);
   await consumeOrderEmailMessages(emailChannel);
 }

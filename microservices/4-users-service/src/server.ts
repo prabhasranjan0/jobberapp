@@ -1,7 +1,7 @@
 import http from 'http';
 
 import 'express-async-errors';
-import { CustomError, IAuthPayload, IErrorResponse, winstonLogger } from '@uzochukwueddie/jobber-shared';
+import { CustomError, IAuthPayload, IErrorResponse, winstonLogger } from '@prabhasranjan0/jobber-share';
 import { Logger } from 'winston';
 import { config } from '@users/config';
 import { Application, Request, Response, NextFunction, json, urlencoded } from 'express';
@@ -14,7 +14,12 @@ import { checkConnection } from '@users/elasticsearch';
 import { appRoutes } from '@users/routes';
 import { createConnection } from '@users/queues/connection';
 import { Channel } from 'amqplib';
-import { consumeBuyerDirectMessage, consumeReviewFanoutMessages, consumeSeedGigDirectMessages, consumeSellerDirectMessage } from '@users/queues/user.consumer';
+import {
+  consumeBuyerDirectMessage,
+  consumeReviewFanoutMessages,
+  consumeSeedGigDirectMessages,
+  consumeSellerDirectMessage
+} from '@users/queues/user.consumer';
 
 const SERVER_PORT = 4003;
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'usersServer', 'debug');
@@ -61,7 +66,7 @@ const routesMiddleware = (app: Application): void => {
 };
 
 const startQueues = async (): Promise<void> => {
-  const userChannel: Channel = await createConnection() as Channel;
+  const userChannel: Channel = (await createConnection()) as Channel;
   await consumeBuyerDirectMessage(userChannel);
   await consumeSellerDirectMessage(userChannel);
   await consumeReviewFanoutMessages(userChannel);

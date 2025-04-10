@@ -1,5 +1,5 @@
 import { config } from '@notifications/config';
-import { IEmailLocals, winstonLogger } from '@uzochukwueddie/jobber-shared';
+import { IEmailLocals, winstonLogger } from '@prabhasranjan0/jobber-share';
 import { Channel, ConsumeMessage } from 'amqplib';
 import { Logger } from 'winston';
 import { createConnection } from '@notifications/queues/connection';
@@ -10,7 +10,7 @@ const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'emailConsumer
 async function consumeAuthEmailMessages(channel: Channel): Promise<void> {
   try {
     if (!channel) {
-      channel = await createConnection() as Channel;
+      channel = (await createConnection()) as Channel;
     }
     const exchangeName = 'jobber-email-notification';
     const routingKey = 'auth-email';
@@ -39,7 +39,7 @@ async function consumeAuthEmailMessages(channel: Channel): Promise<void> {
 async function consumeOrderEmailMessages(channel: Channel): Promise<void> {
   try {
     if (!channel) {
-      channel = await createConnection() as Channel;
+      channel = (await createConnection()) as Channel;
     }
     const exchangeName = 'jobber-order-notification';
     const routingKey = 'order-email';

@@ -1,8 +1,14 @@
 import crypto from 'crypto';
 
 import { changePasswordSchema, emailSchema, passwordSchema } from '@auth/schemes/password';
-import { getAuthUserByPasswordToken, getUserByEmail, getUserByUsername, updatePassword, updatePasswordToken } from '@auth/services/auth.service';
-import { BadRequestError, IAuthDocument, IEmailMessageDetails } from '@uzochukwueddie/jobber-shared';
+import {
+  getAuthUserByPasswordToken,
+  getUserByEmail,
+  getUserByUsername,
+  updatePassword,
+  updatePasswordToken
+} from '@auth/services/auth.service';
+import { BadRequestError, IAuthDocument, IEmailMessageDetails } from '@prabhasranjan0/jobber-share';
 import { Request, Response } from 'express';
 import { config } from '@auth/config';
 import { publishDirectMessage } from '@auth/queues/auth.producer';

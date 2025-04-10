@@ -4,10 +4,10 @@ import * as orderService from '@order/services/order.service';
 import { authUserPayload, orderDocument, orderMockRequest, orderMockResponse } from '@order/controllers/order/test/mocks/order.mock';
 import { intent, order } from '@order/controllers/order/create';
 import { orderSchema } from '@order/schemes/order';
-import { BadRequestError, IOrderDocument } from '@uzochukwueddie/jobber-shared';
+import { BadRequestError, IOrderDocument } from '@prabhasranjan0/jobber-share';
 
 jest.mock('@order/services/order.service');
-jest.mock('@uzochukwueddie/jobber-shared');
+jest.mock('@prabhasranjan0/jobber-share');
 jest.mock('@order/schemes/order');
 jest.mock('@elastic/elasticsearch');
 
@@ -18,11 +18,11 @@ jest.mock('stripe', () => {
     __esModule: true,
     default: jest.fn(() => ({
       paymentIntents: {
-        create: (...args: any) => mockPaymentIntentsCreate(...args) as unknown,
+        create: (...args: any) => mockPaymentIntentsCreate(...args) as unknown
       },
       customers: {
-        search: (...args: any) => mockCustomersSearch(...args) as unknown,
-      },
+        search: (...args: any) => mockCustomersSearch(...args) as unknown
+      }
     }))
   };
 });
@@ -40,7 +40,7 @@ describe('Order Controller', () => {
     it('should create a new intent and return the corrct response', async () => {
       const req: Request = orderMockRequest({}, orderDocument, authUserPayload) as unknown as Request;
       const res: Response = orderMockResponse();
-      mockCustomersSearch.mockResolvedValueOnce({ data: [{ id: '12236362' }]});
+      mockCustomersSearch.mockResolvedValueOnce({ data: [{ id: '12236362' }] });
       mockPaymentIntentsCreate.mockResolvedValueOnce({ client_secret: '123443', id: '23485848' });
       await intent(req, res);
       expect(res.status).toHaveBeenCalledWith(201);
@@ -77,13 +77,14 @@ describe('Order Controller', () => {
       const serviceFee: number = req.body.price < 50 ? (5.5 / 100) * req.body.price + 2 : (5.5 / 100) * req.body.price;
       let orderData: IOrderDocument = req.body;
       orderData = { ...orderData, serviceFee };
-      jest.spyOn(orderSchema, 'validate').mockImplementation((): any => Promise.resolve({error: {}}));
+      jest.spyOn(orderSchema, 'validate').mockImplementation((): any => Promise.resolve({ error: {} }));
       jest.spyOn(orderService, 'createOrder').mockResolvedValue(orderData);
 
       await order(req, res);
       expect(res.status).toHaveBeenCalledWith(201);
       expect(res.json).toHaveBeenCalledWith({
-        message: 'Order created successfully.', order: orderData
+        message: 'Order created successfully.',
+        order: orderData
       });
     });
   });

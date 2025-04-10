@@ -1,5 +1,5 @@
 import { getNotificationsById } from '@order/services/notification.service';
-import { IOrderNotifcation } from '@uzochukwueddie/jobber-shared';
+import { IOrderNotifcation } from '@prabhasranjan0/jobber-share';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 

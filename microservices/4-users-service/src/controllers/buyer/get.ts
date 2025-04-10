@@ -1,5 +1,5 @@
 import { getBuyerByEmail, getBuyerByUsername } from '@users/services/buyer.service';
-import { IBuyerDocument } from '@uzochukwueddie/jobber-shared';
+import { IBuyerDocument } from '@prabhasranjan0/jobber-share';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 

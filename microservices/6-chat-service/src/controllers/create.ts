@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 
 import { messageSchema } from '@chat/schemes/message';
-import { BadRequestError, IMessageDocument, uploads } from '@uzochukwueddie/jobber-shared';
+import { BadRequestError, IMessageDocument, uploads } from '@prabhasranjan0/jobber-share';
 import { Request, Response } from 'express';
 import { UploadApiResponse } from 'cloudinary';
 import { addMessage, createConversation } from '@chat/services/message.service';

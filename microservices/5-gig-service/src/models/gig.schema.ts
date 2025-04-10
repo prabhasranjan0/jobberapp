@@ -1,4 +1,4 @@
-import { ISellerGig } from '@uzochukwueddie/jobber-shared';
+import { ISellerGig } from '@prabhasranjan0/jobber-share';
 import mongoose, { Model, Schema, model } from 'mongoose';
 
 const gigSchema: Schema = new Schema(
@@ -19,16 +19,16 @@ const gigSchema: Schema = new Schema(
     ratingsCount: { type: Number, default: 0 },
     ratingSum: { type: Number, default: 0 },
     ratingCategories: {
-      five: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 }},
-      four: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 }},
-      three: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 }},
-      two: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 }},
-      one: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 }},
+      five: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 } },
+      four: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 } },
+      three: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 } },
+      two: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 } },
+      one: { value: { type: Number, default: 0 }, count: { type: Number, default: 0 } }
     },
     price: { type: Number, default: 0 },
     sortId: { type: Number },
     coverImage: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
+    createdAt: { type: Date, default: Date.now }
   },
   {
     versionKey: false,
@@ -42,7 +42,7 @@ const gigSchema: Schema = new Schema(
   }
 );
 
-gigSchema.virtual('id').get(function() {
+gigSchema.virtual('id').get(function () {
   return this._id;
 });
 

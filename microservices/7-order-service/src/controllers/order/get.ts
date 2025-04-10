@@ -1,4 +1,4 @@
-import { IOrderDocument } from '@uzochukwueddie/jobber-shared';
+import { IOrderDocument } from '@prabhasranjan0/jobber-share';
 import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
 import { getOrderByOrderId, getOrdersByBuyerId, getOrdersBySellerId } from '@order/services/order.service';
@@ -18,8 +18,4 @@ const buyerOrders = async (req: Request, res: Response): Promise<void> => {
   res.status(StatusCodes.OK).json({ message: 'Buyer orders', orders });
 };
 
-export {
-  orderId,
-  sellerOrders,
-  buyerOrders
-};
+export { orderId, sellerOrders, buyerOrders };

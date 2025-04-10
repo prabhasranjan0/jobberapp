@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { AxiosService } from '@gateway/services/axios';
 import { config } from '@gateway/config';
-import { IAuth } from '@uzochukwueddie/jobber-shared';
+import { IAuth } from '@prabhasranjan0/jobber-share';
 
 export let axiosAuthInstance: ReturnType<typeof axios.create>;
 
@@ -33,12 +33,12 @@ class AuthService {
     return response;
   }
 
-  async verifyOTP(otp: string, body: { browserName: string, deviceType: string }): Promise<AxiosResponse> {
+  async verifyOTP(otp: string, body: { browserName: string; deviceType: string }): Promise<AxiosResponse> {
     const response: AxiosResponse = await axiosAuthInstance.put(`/verify-otp/${otp}`, body);
     return response;
   }
 
-  async resendEmail(data: { userId: number, email: string }): Promise<AxiosResponse> {
+  async resendEmail(data: { userId: number; email: string }): Promise<AxiosResponse> {
     const response: AxiosResponse = await axiosAuthInstance.post('/resend-email', data);
     return response;
   }

@@ -1,5 +1,5 @@
 import { config } from '@chat/config';
-import { winstonLogger } from '@uzochukwueddie/jobber-shared';
+import { winstonLogger } from '@prabhasranjan0/jobber-share';
 import { Channel } from 'amqplib';
 import { Logger } from 'winston';
 import { createConnection } from '@chat/queues/connection';
@@ -15,7 +15,7 @@ const publishDirectMessage = async (
 ): Promise<void> => {
   try {
     if (!channel) {
-      channel = await createConnection() as Channel;
+      channel = (await createConnection()) as Channel;
     }
     await channel.assertExchange(exchangeName, 'direct');
     channel.publish(exchangeName, routingKey, Buffer.from(message));
