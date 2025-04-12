@@ -23,7 +23,9 @@ export const initialAuthUserValues: IAuthUser = {
   passwordResetToken: null,
   profilePicture: null,
   updatedAt: null,
-  username: null
+  username: null,
+  browserName: null,
+  deviceType: null
 };
 
 export const emptyBuyerData: IBuyerDocument = {

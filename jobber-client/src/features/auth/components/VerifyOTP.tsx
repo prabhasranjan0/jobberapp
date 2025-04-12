@@ -1,4 +1,3 @@
-import { Action } from '@reduxjs/toolkit';
 import { ChangeEvent, FC, lazy, LazyExoticComponent, ReactElement, useState } from 'react';
 import { useDeviceData, useMobileOrientation } from 'react-device-detect';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
@@ -46,12 +45,16 @@ const VerifyOTP: FC = (): ReactElement => {
       };
       const result: IResponse = await verifyOTP(data).unwrap();
       dispatch(addAuthUser({ authInfo: result.user }));
-      const buyerResponse = await dispatch(buyerApi.endpoints.getCurrentBuyerByUsername.initiate() as unknown as Action);
-      dispatch(addBuyer(buyerResponse.data?.buyer));
-      const sellerResponse = await dispatch(
-        sellerApi.endpoints.getSellerByUsername.initiate(`${result.user?.username}`) as unknown as Action
-      );
-      dispatch(addSeller(sellerResponse.data?.seller));
+      const buyerResponse = await buyerApi.endpoints.getCurrentBuyerByUsername.initiate();
+      if ('data' in buyerResponse && buyerResponse.data) {
+        const buyerData = buyerResponse.data as { buyer: unknown }; // Explicitly type the response
+        dispatch(addBuyer(buyerData.buyer));
+      }
+      const sellerResponse = await sellerApi.endpoints.getSellerByUsername.initiate(`${result.user?.username}`);
+      if ('data' in sellerResponse && sellerResponse.data) {
+        const sellerData = sellerResponse.data as { seller: unknown }; // Explicitly type the response
+        dispatch(addSeller(sellerData.seller));
+      }
       dispatch(updateLogout(false));
       dispatch(updateHeader('home'));
       dispatch(updateCategoryContainer(true));
