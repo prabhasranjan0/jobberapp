@@ -81,6 +81,7 @@ const TagsInput: FC<ITagsInputProps> = (props): ReactElement => {
           onKeyDown={(event: KeyboardEvent) => onKeyDown(event, itemInput, tags)}
           onKeyUp={onKeyUp}
         />
+        <span className="flex justify-start text-xs text-[#95979d]">{'Press the comma ( , ) key to select an item.'}</span>
         <span className="flex justify-end text-xs text-[#95979d]">
           {maxTagCount - tags.length} {counterText}
         </span>

@@ -6,6 +6,7 @@ import { shortenLargeNumbers } from 'src/shared/utils/utils.service';
 
 import { SellerContextType } from '../../interfaces/seller.interface';
 import ManageEarningsTable from './components/ManageEarningsTable';
+import { TimeAgo } from 'src/shared/utils/timeago.utils';
 
 const ManageEarnings: FC = (): ReactElement => {
   const { orders, seller } = useOutletContext<SellerContextType>();
@@ -21,7 +22,9 @@ const ManageEarnings: FC = (): ReactElement => {
           <div className="border border-grey flex items-center justify-center p-8 sm:col-span-1">
             <div className="flex flex-col gap-3">
               <span className="text-center text-base lg:text-xl">Earnings to date</span>
-              <span className="text-center font-bold text-base md:text-xl lg:text-2xl truncate">${seller?.totalEarnings}</span>
+              <span className="text-center font-bold text-base md:text-xl lg:text-2xl truncate">
+                {TimeAgo.dayWithTime(`${seller?.recentDelivery}`)}
+              </span>
             </div>
           </div>
           <div className="border border-grey flex items-center justify-center p-8 sm:col-span-1">
