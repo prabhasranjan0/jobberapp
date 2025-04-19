@@ -20,6 +20,7 @@ import Invoice from './Invoice/Invoice';
 const Requirement: FC = (): ReactElement => {
   const buyer = useAppSelector((state: IReduxState) => state.buyer);
   const [requirement, setRequirement] = useState<string>('');
+  const [orderId] = useState<string>(`JO${generateRandomNumber(11)}`);
   const { gigId } = useParams<string>();
   const [searchParams] = useSearchParams({});
   const gigRef = useRef<ISellerGig>();
@@ -28,7 +29,6 @@ const Requirement: FC = (): ReactElement => {
   const order_date = `${searchParams.get('order_date')}`;
   const serviceFee: number = offer.price < 50 ? (5.5 / 100) * offer.price + 2 : (5.5 / 100) * offer.price;
   const navigate: NavigateFunction = useNavigate();
-  const orderId = `JO${generateRandomNumber(11)}`;
   const invoiceId = `JI${generateRandomNumber(11)}`;
   const { data, isSuccess } = useGetGigByIdQuery(`${gigId}`);
   const [createOrder] = useCreateOrderMutation();
