@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-
+import mongoose from 'mongoose';
 import Stripe from 'stripe';
 import { Request, Response } from 'express';
 import { config } from '@order/config';
@@ -15,6 +15,7 @@ import {
 import { orderUpdateSchema } from '@order/schemes/order';
 import { BadRequestError, IDeliveredWork, IOrderDocument, uploads } from '@prabhasranjan0/jobber-share';
 import { UploadApiResponse } from 'cloudinary';
+import { markNotificationAsRead } from '@order/services/notification.service';
 
 const stripe: Stripe = new Stripe(config.STRIPE_API_KEY!, {
   typescript: true
@@ -79,4 +80,20 @@ const deliverOrder = async (req: Request, res: Response): Promise<void> => {
   res.status(StatusCodes.OK).json({ message: 'Order delivered successfully.', order });
 };
 
-export { cancel, requestExtension, deliveryDate, buyerApproveOrder, deliverOrder };
+const updateNotificationMarkAsRead = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { notificationId } = req.body;
+    if (!notificationId || !mongoose.Types.ObjectId.isValid(notificationId)) {
+      res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid or missing notification ID.' });
+    }
+    const notification = await markNotificationAsRead(notificationId);
+    if (!notification) {
+      res.status(StatusCodes.NOT_FOUND).json({ message: 'Notification not found.' });
+    }
+    res.status(StatusCodes.OK).json({ message: 'Notification marked as read.' });
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error updating notification. Internal server error.' });
+  }
+};
+
+export { cancel, requestExtension, deliveryDate, buyerApproveOrder, deliverOrder, updateNotificationMarkAsRead };
