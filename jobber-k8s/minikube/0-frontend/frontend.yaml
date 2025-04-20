@@ -32,3 +32,20 @@ spec:
           ports:
             - name: frontend
               containerPort: 80
+          env:
+            - name: VITE_NODE_ENV
+              value: "production"
+            - name: VITE_BASE_ENDPOINT
+              value: "http://jobber-gateway:4000"
+            - name: VITE_CLIENT_ENDPOINT
+              value: "http://jobberapp.com"
+            - name: VITE_STRIPE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jobber-backend-secret
+                  key: stripe-client-key
+            - name: VITE_ELASTIC_APM_SERVER
+              valueFrom:
+                secretKeyRef:
+                  name: jobber-backend-secret
+                  key: jobber-elastic-apm-server-url
