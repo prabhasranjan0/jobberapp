@@ -3,6 +3,18 @@
 USERNAME = prabhasranjan0
 DC = docker-compose -f ./volumes/docker-compose.yaml
 NAMESPACE = production
+GITHUB_REGISTRY = https://npm.pkg.github.com/prabhasranjan0
+
+MICROSERVICE_DIRS = $(shell find microservices -maxdepth 1 -type d ! -path microservices)
+
+create-npmrc-all:
+	@echo "📦 Creating .npmrc in all microservices..."
+	@for dir in $(MICROSERVICE_DIRS); do \
+		echo "➡️  Creating .npmrc in $$dir"; \
+		echo "$(USERNAME):registry=$(GITHUB_REGISTRY)" > $$dir/.npmrc; \
+		echo "//npm.pkg.github.com/:_authToken=$(NPM_TOKEN)" >> $$dir/.npmrc; \
+	done
+	@echo "✅ .npmrc created in all services."
 
 # Format: path:name
 SERVICES = \

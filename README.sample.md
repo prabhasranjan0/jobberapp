@@ -321,3 +321,185 @@ kubectl -n <namespace> port-forward <pod-name> <forward-port>:<container-port>
 ```
 
 ---
+
+# 📘 Jobber Microservices - Deployment Guide
+
+This guide provides a complete set of instructions to build, deploy, and manage the Jobber microservices architecture using Docker and Kubernetes (Minikube).
+
+---
+
+## 🚀 Prerequisites
+
+- Docker
+- Docker Compose
+- Kubernetes CLI (`kubectl`)
+- Minikube
+- Personal Access Token from GitHub (for private package access)
+
+---
+
+## ⚙️ 1. Create `.npmrc` in All Microservices
+
+Generates `.npmrc` files in all microservice directories with GitHub registry configuration:
+
+```bash
+make create-npmrc-all NPM_TOKEN=your_github_token
+```
+
+This will create `.npmrc` files with the following content:
+
+```ini
+@username:registry=https://npm.pkg.github.com/username
+//npm.pkg.github.com/:_authToken=your_github_token
+```
+
+---
+
+## 🐳 2. Docker Image Steps
+
+### Build and Push All Docker Images
+
+```bash
+make all-images
+```
+
+This will:
+
+- Build Docker images for all microservices
+- Tag them as `:stable`
+- Push them to the configured Docker registry
+
+---
+
+## ☸️ 3. Kubernetes (Minikube) Deployment
+
+Start Minikube with maximum CPU and memory:
+
+```bash
+make apply-minikube
+```
+
+---
+
+## 🛡️ 4. Create Kubernetes Namespace
+
+Creates the `production` namespace:
+
+```bash
+make create-namespace
+```
+
+---
+
+## 🔐 5. Apply Jobber Secrets
+
+Apply Kubernetes secrets needed for your services:
+
+```bash
+make secrets-apply
+```
+
+---
+
+## 📦 6. Deploy Elasticsearch
+
+```bash
+make elasticsearch-apply
+```
+
+This will start the Elasticsearch pod.
+
+---
+
+## 📊 7. Setup Kibana with Elasticsearch
+
+### 🔧 Step 1: Change Kibana System Password
+
+From inside the Elasticsearch pod shell, run:
+
+```bash
+curl -s -X POST -u elastic:admin1234 \
+  -H "Content-Type: application/json" \
+  http://jobber-elastic.production.svc.cluster.local:9200/_security/user/kibana_system/_password \
+  -d '{"password": "kibana"}'
+```
+
+### 🛡️ Step 2: Generate Kibana Service Token
+
+Generate a service token:
+
+```bash
+elasticsearch_service_token create elastic/kibana jobber-kibana
+```
+
+> **Note:** Navigate to the `bin` directory and run the command. Copy the returned token.
+
+### 📅 Step 3: Configure Kibana Token in `kibana.yaml`
+
+Paste the token into the deployment:
+
+```yaml
+env:
+  - name: ELASTICSEARCH_SERVICEACCOUNT_TOKEN
+    value: your_generated_token_here
+```
+
+Then re-apply the updated Kibana deployment.
+
+---
+
+## 📊 8. Deploy Kibana and Core Services
+
+```bash
+make kibana-apply
+make mongo-apply
+make mysql-apply
+make postgresql-apply
+make redis-apply
+make queue-apply
+```
+
+Or use:
+
+```bash
+make core-services-apply
+```
+
+---
+
+## 📊 9. Deploy Microservices and Frontend
+
+```bash
+make apply-all-client-app
+```
+
+---
+
+## 🩹 10. Cleanup Commands
+
+### Delete Microservices and Core Services
+
+```bash
+make delete-all-client-app
+make core-services-delete
+make delete-namespace
+```
+
+Or all at once:
+
+```bash
+make delete-everything
+```
+
+---
+
+## 📄 11. Notes
+
+- All commands are defined in the `Makefile`
+- Use `make help` (if implemented) to list all available targets
+
+> Make sure Docker and Minikube are running before executing commands
+
+---
+
+Happy coding! 🧑‍💻
