@@ -13,7 +13,7 @@ const InvoiceTextInfo: FC = (): ReactElement => {
       <View style={styles.titleContainer}>
         <View style={styles.spaceBetween}>
           <View>
-            <Text style={styles.info}>Purchased on Jobber.com through Jobber Limited </Text>
+            <Text style={styles.info}>Purchased on BintyBazaar.com through BintyBazaar Limited </Text>
             <Text style={styles.info}>have an ivoice or billing question? Contact us</Text>
           </View>
         </View>

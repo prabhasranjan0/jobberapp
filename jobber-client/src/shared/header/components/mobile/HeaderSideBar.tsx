@@ -43,7 +43,7 @@ const HeaderSideBar: FC<IHeaderSideBarProps> = ({ setShowRegisterModal, setShowL
             }}
             className="bg-sky-500 border-sky-500 cursor-pointer rounded border px-6 py-3 text-base font-semibold text-white transition-all duration-300"
           >
-            Join Jobber
+            Join BintyBazaar
           </div>
           <div
             onClick={(event: MouseEvent) => {
@@ -57,7 +57,7 @@ const HeaderSideBar: FC<IHeaderSideBarProps> = ({ setShowRegisterModal, setShowL
             }}
             className="cursor-pointer text-base font-medium text-gray-400"
           >
-            Become a Seller
+            Join as a Seller
           </div>
           <div
             onClick={(event: MouseEvent) => {

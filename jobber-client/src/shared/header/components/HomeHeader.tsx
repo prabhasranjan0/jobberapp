@@ -179,7 +179,7 @@ const HomeHeader: FC<IHomeHeaderProps> = ({ showCategoryContainer }): ReactEleme
                       }}
                       className="relative z-10 flex cursor-pointer justify-center self-center text-2xl font-semibold text-black lg:text-3xl"
                     >
-                      Jobber
+                      BintyBazaar
                     </Link>
                     <HeaderSearchInput />
                   </div>
@@ -275,7 +275,7 @@ const HomeHeader: FC<IHomeHeaderProps> = ({ showCategoryContainer }): ReactEleme
                           to="/seller_onboarding"
                           className="relative ml-auto flex h-9 items-center justify-center rounded-full bg-sky-500 text-white font-bold sm:px-6 hover:bg-sky-400"
                         >
-                          <span>Become a Seller</span>
+                          <span>Join as a Seller</span>
                         </Link>
                       </li>
                     )}

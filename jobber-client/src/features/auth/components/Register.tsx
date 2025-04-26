@@ -88,7 +88,7 @@ const RegisterModal: FC<IModalBgProps> = ({ onClose, onToggle }): ReactElement =
                 label={<FaChevronLeft className="icon icon-tabler icon-tabler-x" />}
               />
             )}
-            <h1 className="flex w-full justify-center">Join Jobber</h1>
+            <h1 className="flex w-full justify-center">Join BintyBazaar</h1>
             <Button
               className="cursor-pointer rounded text-gray-400 hover:text-gray-600"
               role="button"

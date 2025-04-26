@@ -53,7 +53,7 @@ const DashboardHeader: FC = (): ReactElement => {
                       to={`/${lowerCase(`${seller?.username}`)}/${seller?._id}/seller_dashboard`}
                       className="relative z-10 flex cursor-pointer justify-center self-center text-2xl font-semibold text-black lg:text-3xl"
                     >
-                      Jobber
+                      BintyBazaar
                     </Link>
                   </div>
                 </div>
