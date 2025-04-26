@@ -1,4 +1,5 @@
 import { FC, ReactElement, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useGetAuthGigsByCategoryQuery } from 'src/features/auth/services/auth.service';
 import { ISellerGig } from 'src/features/gigs/interfaces/gig.interface';
 import TopGigsView from 'src/shared/gigs/TopGigsView';
@@ -20,11 +21,13 @@ const GigTabs: FC = (): ReactElement => {
   }
 
   return (
-    <div className="relative m-auto mt-8 w-screen px-6 xl:container md:px-12 lg:px-6">
+    <div className="relative m-auto w-screen px-6 md:px-12 lg:px-6 bg-brand-blueSecondary">
       <div className="mx-auto flex flex-col px-4 py-8 lg:px-6 lg:py-10">
         <div className="flex flex-col text-left">
-          <h2 className="mb-3 text-3xl font-bold text-black">A broad selection of services</h2>
-          <h4>Choose from a broad selection of services from expert freelancers for your next project.</h4>
+          <h2 className="mb-3 text-3xl font-bold text-brand-lightBlue">{`Explore a wide range of expert services`}</h2>
+          <h4 className="text-brand-lightPrimary">
+            {`Discover expert freelancers offering a wide range of services for your next project.`}
+          </h4>
         </div>
         <div className="mt-6">
           <ul className="lg:flex lg:justify-between gap-5 overflow-x-auto scroll-smooth whitespace-nowrap relative inline-block">
@@ -32,26 +35,28 @@ const GigTabs: FC = (): ReactElement => {
               <li
                 key={uuidv4()}
                 onClick={() => setActiveTab(category)}
-                className={`cursor-pointer font-bold py-2 lg:py-0 ${activeTab === category ? 'text-black' : 'text-gray-400'}`}
+                className={`cursor-pointer font-bold py-2 lg:py-0 ${activeTab === category ? 'text-brand-lightBlue' : 'text-brand-lightSecondary'}`}
               >
                 {category}
               </li>
             ))}
           </ul>
         </div>
-        <div className="mt-4 h-full overflow-hidden border px-6 py-6">
+        <div className="mt-4 h-full overflow-hidden border px-6 py-6 rounded-sm">
           {categoryGigs.length > 0 ? (
             <>
-              <a
+              <Link
                 className="mt-10 w-[10%] rounded border border-black px-6 py-3 text-center text-sm font-bold text-black hover:bg-gray-100 focus:outline-none md:px-4 md:py-2 md:text-base"
-                href={`/search/categories/${replaceSpacesWithDash(activeTab)}`}
+                to={`/search/categories/${replaceSpacesWithDash(activeTab)}`}
               >
                 Explore
-              </a>
+              </Link>
               <TopGigsView gigs={categoryGigs} width="w-72" type="index" />
             </>
           ) : (
-            <div className="flex h-96 items-center justify-center text-lg">Information not available at the moment.</div>
+            <div className="flex h-96 items-center justify-center text-lg text-brand-lightBlue">
+              Information not available at the moment.
+            </div>
           )}
         </div>
       </div>

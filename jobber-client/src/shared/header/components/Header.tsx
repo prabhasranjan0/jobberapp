@@ -89,7 +89,7 @@ const Header: FC<IHeader> = ({ navClass }): ReactElement => {
                   </div>
                   <div
                     onClick={() => setShowModal((item: IHeaderModalProps) => ({ ...item, register: true }))}
-                    className="relative ml-auto flex h-9 items-center justify-center rounded-full bg-sky-500
+                    className="relative ml-auto flex h-9 items-center justify-center rounded-full bg-brand-bluePrimary
                             text-white font-bold sm:px-6 hover:bg-sky-400"
                   >
                     <span className="relative text-sm font-semibold text-white">Sign Up</span>

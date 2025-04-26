@@ -34,7 +34,7 @@ const Hero: FC = (): ReactElement => {
   }, []);
 
   return (
-    <div className="relative pb-20 pt-40 bg-brand-lightBlue dark:bg-brand-darkBlue lg:pt-44">
+    <div className="relative pb-20 pt-40 bg-gradient-to-b from-[#0A2647] to-[#205295] dark:bg-gradient-to-b dark:from-bg-brand-darkBlue dark:to-bg-brand-blueSecondary lg:pt-44">
       <div className="relative m-auto px-6 xl:container md:px-12 lg:px-6">
         <h3 className="mb-4 mt-4 max-w-2xl pb-2 text-center text-2xl font-normal dark:text-white lg:text-left">
           Expert categories: <span ref={typedElement}></span>
@@ -50,19 +50,18 @@ const Hero: FC = (): ReactElement => {
             <p className="text-gray-700 dark:text-gray-300 sm:text-lg lg:w-11/12">
               {`Connect with skilled freelancers for your next big idea.`}
             </p>
-
             <div className="flex w-full justify-between gap-6 lg:gap-12">
               <form
-                className="mx-auto flex w-full items-center bg-white rounded-[10px]"
+                className="mx-auto flex w-full items-center bg-white rounded-full gap-1 pl-1 pr-1 h-14"
                 onSubmit={(event: FormEvent) => {
                   event.preventDefault();
                   navigateToSearchPage();
                 }}
               >
-                <div className="w-full">
+                <div className="w-full h-12">
                   <TextInput
                     type="search"
-                    className="w-full rounded-full px-4 py-1 text-gray-800 focus:outline-none"
+                    className="w-full h-full flex rounded-full px-4 py-1 text-gray-800 focus:outline-none"
                     placeholder="Search"
                     value={searchTerm}
                     onChange={(event: ChangeEvent) => {
@@ -70,7 +69,7 @@ const Hero: FC = (): ReactElement => {
                     }}
                   />
                 </div>
-                <div className="bg-brand-bluePrimary rounded-br-[10px] rounded-tr-[10px]">
+                <div className="bg-brand-bluePrimary rounded-full mt-1 mb-1">
                   <Button
                     type="submit"
                     className="flex h-12 w-12 items-center justify-center text-white"
@@ -85,7 +84,7 @@ const Hero: FC = (): ReactElement => {
               {categories.map((category: string) => (
                 <div
                   key={uuidv4()}
-                  className="w-full min-w-0 cursor-pointer rounded-sm border border-gray-200 p-4 duration-300 hover:shadow-lg hover:shadow-cyan-600/20 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-brand-lightBlue hover:scale-105 hover:border-b-4 hover:border-cyan-400 transition-all"
+                  className="w-full min-w-0 cursor-pointer rounded-md border border-gray-200 p-4 duration-300 hover:shadow-lg hover:shadow-cyan-600/20 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-brand-lightBlue hover:scale-105 hover:border-b-4 hover:border-cyan-400 transition-all"
                 >
                   <div className="flex justify-center">
                     <span className="block truncate font-medium dark:text-white">
