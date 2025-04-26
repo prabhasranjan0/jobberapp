@@ -17,7 +17,7 @@ const Categories: FC = (): ReactElement => {
             {categories.map((category: any) => (
               <div key={uuidv4()} className="w-full py-5 cursor-pointer">
                 <img className="mx-auto hidden mb-4 sm:w-8 sm:h-8 md:h-12 md:w-12 sm:flex" src={category.icon} alt={category.name} />
-                <h3 className="mb-1 text-base text-white">
+                <h3 className="mb-1 text-base text-white hover:text-brand-darkBlue font-bold">
                   <a className="w-full">{category.name}</a>
                 </h3>
               </div>

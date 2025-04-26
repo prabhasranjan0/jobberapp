@@ -35,7 +35,7 @@ const GigTabs: FC = (): ReactElement => {
               <li
                 key={uuidv4()}
                 onClick={() => setActiveTab(category)}
-                className={`cursor-pointer font-bold py-2 lg:py-0 ${activeTab === category ? 'text-brand-lightBlue' : 'text-brand-lightSecondary'}`}
+                className={`cursor-pointer font-bold py-2 lg:py-0 ${activeTab === category ? 'text-brand-darkBlue' : 'text-brand-lightSecondary'}`}
               >
                 {category}
               </li>

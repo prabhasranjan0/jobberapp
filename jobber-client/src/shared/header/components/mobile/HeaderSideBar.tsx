@@ -27,11 +27,11 @@ const HeaderSideBar: FC<IHeaderSideBarProps> = ({ setShowRegisterModal, setShowL
       }}
     >
       <div
-        className={`absolute top-0 z-20 flex h-screen w-[250px] flex-col items-start justify-start gap-4 bg-white p-6 ${
+        className={`absolute top-0 z-20 flex h-screen w-[250px] flex-col items-start justify-start gap-4 bg-brand-darkBlue p-6 ${
           show ? 'left-0' : '-left-[100vw]'
         }`}
       >
-        <div className="z-2 sticky top-0 flex w-full flex-col items-start justify-start gap-6 bg-white">
+        <div className="z-2 sticky top-0 flex w-full flex-col items-start justify-start gap-6 bg-brand-darkBlue">
           <div
             onClick={(event: MouseEvent) => {
               event.stopPropagation();

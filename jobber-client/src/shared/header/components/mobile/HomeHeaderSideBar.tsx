@@ -103,7 +103,7 @@ const HomeHeaderSideBar: FC<IHeaderSideBarProps> = ({ setOpenSidebar }): ReactEl
               }}
               className="cursor-pointer text-base font-medium text-gray-400"
             >
-              <Link to="/seller_onboarding">Join as a Seller</Link>
+              <Link to="/seller_onboarding">Become a Seller</Link>
             </div>
           )}
           {isSeller && (
