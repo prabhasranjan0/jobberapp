@@ -18,20 +18,21 @@ create-npmrc-all:
 
 # Format: path:name
 SERVICES = \
-	jobber-client:frontend \
-	microservices/1-gateway-service:gateway \
-	microservices/2-notification-service:notification \
-	microservices/3-auth-service:auth \
-	microservices/4-users-service:users \
-	microservices/5-gig-service:gig \
-	microservices/6-chat-service:chat \
-	microservices/7-order-service:order \
-	microservices/8-review-service:review
+    microservices/8-review-service:review \
+    microservices/7-order-service:order \
+    microservices/6-chat-service:chat \
+    microservices/5-gig-service:gig \
+    microservices/4-users-service:users \
+    microservices/3-auth-service:auth \
+    microservices/2-notification-service:notification \
+    microservices/1-gateway-service:gateway \
+    jobber-client:frontend
 
 .PHONY: all build push up down logs clean-containers \
 	core-services micro-services elasticsearch kibana \
 	apply-minikube create-namespace delete-namespace \
-	apply-all-client-app delete-all-client-app delete-everything
+	apply-all-client-app delete-all-client-app delete-everything \
+	k8s-apply-ingress-class k8s-delete-ingress-class
 
 all-images: build push
 
@@ -121,6 +122,8 @@ $(foreach svc,0-frontend 1-gateway 2-notifications 3-auth 4-users 5-gig 6-chat 7
 $(foreach svc,0-frontend 1-gateway 2-notifications 3-auth 4-users 5-gig 6-chat 7-order 8-reviews,\
 	$(eval $(call delete_k8s,$(svc),$(svc))))
 
+init: secrets-apply k8s-apply-ingress-class
+
 core-services-apply: kibana-apply mongo-apply \
 	mysql-apply postgresql-apply \
 	redis-apply queue-apply
@@ -137,5 +140,18 @@ delete-all-client-app: 0-frontend-delete \
 	1-gateway-delete 2-notifications-delete 3-auth-delete 4-users-delete \
 	5-gig-delete 6-chat-delete 7-order-delete \
 	8-reviews-delete secrets-delete
+
+k8s-apply-ingress-class:
+	@echo "🌐 Installing ingress-nginx via Helm..."
+	helm repo add ingress-nginx "https://kubernetes.github.io/ingress-nginx"
+	helm repo update
+	helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
+	  --namespace $(NAMESPACE) --create-namespace
+	@echo "✅ ingress-nginx installed or upgraded."
+
+k8s-delete-ingress-class:
+	@echo "🗑️ Uninstalling ingress-nginx from namespace $(NAMESPACE)..."
+	helm uninstall ingress-nginx --namespace $(NAMESPACE)
+	@echo "✅ ingress-nginx has been uninstalled."
 
 delete-everything: delete-all-client-app core-services-delete delete-namespace

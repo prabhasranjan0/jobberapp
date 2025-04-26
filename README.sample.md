@@ -429,7 +429,7 @@ curl -s -X POST -u elastic:admin1234 \
 Generate a service token:
 
 ```bash
-elasticsearch_service_token create elastic/kibana jobber-kibana
+elasticsearch-service-tokens create elastic/kibana jobber-kibana
 ```
 
 > **Note:** Navigate to the `bin` directory and run the command. Copy the returned token.
