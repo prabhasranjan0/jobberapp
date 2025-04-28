@@ -29,7 +29,7 @@ const GigPaginate: FC<IGigPaginateProps> = ({
             }
           }}
         >
-          <FaArrowLeft className="flex self-center" />
+          <FaArrowLeft className="flex self-center" color={`${itemOffset === 1 ? 'grey' : 'white'}`} />
         </div>
         {showNumbers &&
           paginationCount.map((_, index: number) => (
@@ -65,7 +65,7 @@ const GigPaginate: FC<IGigPaginateProps> = ({
             }
           }}
         >
-          <FaArrowRight className="flex self-center" color={`${itemOffset === paginationCount.length ? 'grey' : 'black'}`} />
+          <FaArrowRight className="flex self-center" color={`${itemOffset === paginationCount.length ? 'grey' : 'white'}`} />
         </div>
       </ul>
     </div>

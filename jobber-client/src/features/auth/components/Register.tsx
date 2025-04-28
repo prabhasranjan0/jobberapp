@@ -88,7 +88,7 @@ const RegisterModal: FC<IModalBgProps> = ({ onClose, onToggle }): ReactElement =
                 label={<FaChevronLeft className="icon icon-tabler icon-tabler-x" />}
               />
             )}
-            <h1 className="flex w-full justify-center">Join BintyBazaar</h1>
+            <h2 className="flex w-full justify-center">Join BintyBazaar</h2>
             <Button
               className="cursor-pointer rounded text-gray-400 hover:text-gray-600"
               role="button"
@@ -100,14 +100,14 @@ const RegisterModal: FC<IModalBgProps> = ({ onClose, onToggle }): ReactElement =
         <div className="flex w-full items-center justify-center px-5 py-5">
           <ol className="flex w-full">
             <li className="flex w-full items-center text-white after:inline-block after:h-1 after:w-full after:border-4 after:border-b after:border-sky-500 after:content-[''] dark:after:border-sky-500">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sky-500 font-bold dark:bg-sky-500 lg:h-12 lg:w-12">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-bluePrimary font-bold dark:bg-brand-bluePrimary lg:h-12 lg:w-12">
                 1
               </span>
             </li>
             <li className="flex items-center">
               <span
                 className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full font-bold text-white lg:h-12 lg:w-12 ${
-                  step === 2 ? 'bg-sky-500 dark:bg-sky-500' : 'bg-sky-300/50 dark:bg-sky-300/50'
+                  step === 2 ? 'bg-brand-bluePrimary dark:bg-brand-bluePrimary' : 'bg-sky-300/50 dark:bg-sky-300/50'
                 }`}
               >
                 2
@@ -178,7 +178,7 @@ const RegisterModal: FC<IModalBgProps> = ({ onClose, onToggle }): ReactElement =
             </div>
             <Button
               disabled={!userInfo.username || !userInfo.email || !userInfo.password}
-              className={`text-md block w-full cursor-pointer rounded bg-sky-500 px-8 py-2 text-center font-bold text-white hover:bg-sky-400 focus:outline-none ${
+              className={`text-md block w-full cursor-pointer rounded bg-brand-bluePrimary px-8 py-2 text-center font-bold text-white hover:bg-sky-400 focus:outline-none ${
                 !userInfo.username || !userInfo.email || !userInfo.password ? 'cursor-not-allowed' : 'cursor-pointer'
               }`}
               label="Continue"
@@ -252,7 +252,7 @@ const RegisterModal: FC<IModalBgProps> = ({ onClose, onToggle }): ReactElement =
             </div>
             <Button
               disabled={!userInfo.country || !userInfo.profilePicture}
-              className={`text-md block w-full cursor-pointer rounded bg-sky-500 px-8 py-2 text-center font-bold text-white hover:bg-sky-400 focus:outline-none ${
+              className={`text-md block w-full cursor-pointer rounded bg-brand-bluePrimary px-8 py-2 text-center font-bold text-white hover:bg-sky-400 focus:outline-none ${
                 !userInfo.country || !userInfo.profilePicture ? 'cursor-not-allowed' : 'cursor-pointer'
               }`}
               label={`${isLoading ? 'SIGNUP IN PROGRESS...' : 'SIGNUP'}`}

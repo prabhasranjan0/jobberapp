@@ -52,9 +52,9 @@ const AppPage: FC = (): ReactElement => {
 
   const logoutUser = useCallback(async () => {
     if ((!currentUserData && appLogout) || isError) {
-      setTokenIsValid(false);
       applicationLogout(dispatch, navigate);
     }
+    setTokenIsValid(false);
   }, [currentUserData, dispatch, navigate, appLogout, isError]);
 
   useEffect(() => {

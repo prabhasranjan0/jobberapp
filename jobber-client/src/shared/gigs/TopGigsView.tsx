@@ -63,9 +63,9 @@ const TopGigsView: FC<IGigTopProps> = ({ gigs, title, subTitle, category, width,
         {scroll.start && gigs.length > 2 && (
           <span
             onClick={slideLeft}
-            className="absolute left-2 z-50 flex cursor-pointer justify-start self-center rounded-full bg-sky-400 sm:left-3 md:left-7 lg:left-0"
+            className="absolute left-2 z-50 flex cursor-pointer justify-start self-center rounded-full bg-brand-bluePrimary sm:left-3 md:left-7 lg:left-0"
           >
-            <FaAngleLeft className="text-3xl text-white sm:text-3xl md:text-4xl lg:text-4xl" />
+            <FaAngleLeft className="text-3xl text-white sm:text-3xl md:text-4xl lg:text-4xl " />
           </span>
         )}
         <div className="relative flex gap-x-8 pt-3">
@@ -78,7 +78,7 @@ const TopGigsView: FC<IGigTopProps> = ({ gigs, title, subTitle, category, width,
         {!scroll.end && gigs.length > 2 && (
           <span
             onClick={slideRight}
-            className="absolute right-2 flex max-w-4xl cursor-pointer justify-end self-center rounded-full bg-sky-400 sm:right-3 md:right-7 lg:right-0"
+            className="absolute right-2 flex max-w-4xl cursor-pointer justify-end self-center rounded-full bg-brand-bluePrimary sm:right-3 md:right-7 lg:right-0"
           >
             <FaAngleRight className="text-3xl text-white sm:text-3xl md:text-4xl lg:text-4xl" />
           </span>

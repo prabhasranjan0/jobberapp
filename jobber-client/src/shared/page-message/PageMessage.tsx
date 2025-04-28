@@ -14,7 +14,7 @@ const PageMessage: FC<IPageMessageProps> = ({ header, body }): ReactElement => {
       <Button
         onClick={() => navigate('/')}
         disabled={false}
-        className="mt-5 rounded bg-sky-500 px-6 py-3 text-center text-sm font-bold text-white hover:bg-sky-400 focus:outline-none md:px-4 md:py-2 md:text-base"
+        className="mt-5 rounded bg-brand-blueSecondary px-6 py-3 text-center text-sm font-bold text-white hover:bg-sky-400 focus:outline-none md:px-4 md:py-2 md:text-base"
         label="Go Back"
       />
     </div>

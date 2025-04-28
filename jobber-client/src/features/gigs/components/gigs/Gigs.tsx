@@ -87,8 +87,8 @@ const Gigs: FC<IGigsProps> = ({ type }) => {
             </>
           ) : (
             <PageMessage
-              header="No services found for your search"
-              body="Try a new search or get a free quote for your project from our commnunity of freelancers."
+              header="Oops !!! No services match your search at the moment."
+              body="Can’t find what you need? Get a free quote from our talented freelancers."
             />
           )}
           {isError && <PageMessage header="Services issue" body="A network issue occured. Try agin later." />}

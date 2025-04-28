@@ -42,7 +42,7 @@ const Hero: FC = (): ReactElement => {
         <h1 className="text-center text-4xl font-black text-blue-900 dark:text-white sm:mx-auto sm:w-10/12 sm:text-5xl md:w-10/12 md:text-5xl lg:w-auto lg:text-left xl:text-7xl">
           Start Your Next Project <br className="hidden lg:block" />
           <span className="relative bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent dark:from-brand-bluePrimary dark:to-brand-lightSecondary">
-            with the Best Talent .
+            with the Best Talent.
           </span>
         </h1>
         <div className="lg:flex">

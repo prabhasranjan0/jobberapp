@@ -31,21 +31,21 @@ const GigIndexItem: FC<IGigsProps> = ({ gig }): ReactElement => {
           />
           <div className="flex w-full justify-between">
             <span className="text-md hover:underline">
-              <strong className="text-sm font-medium md:text-base">{gigData.username}</strong>
+              <strong className="text-sm font-medium dark:text-white md:text-base">{gigData.username}</strong>
             </span>
           </div>
         </div>
         <div>
           <Link to={`/gig/${gigData.id}/${title}`}>
-            <p className="line-clamp-2 text-sm text-[#404145] hover:underline md:text-base">{gigData.basicDescription}</p>
+            <p className="line-clamp-2 text-sm text-[#404145] dark:text-white hover:underline md:text-base">{gigData.basicDescription}</p>
           </Link>
         </div>
         <div className="flex items-center gap-1 text-yellow-400">
           {parseInt(`${gigData.ratingsCount}`) > 0 ? <FaStar /> : <FaRegStar />}
-          <strong className="text-sm font-bold">({rating(parseInt(`${gigData.ratingSum}`) / parseInt(`${gigData.ratingsCount}`))})</strong>
+          <strong className="text-sm font-bold ">({rating(parseInt(`${gigData.ratingSum}`) / parseInt(`${gigData.ratingsCount}`))})</strong>
         </div>
         <div>
-          <strong className="text-sm font-bold md:text-base">From ${gigData.price}</strong>
+          <strong className="text-sm font-bold md:text-base dark:text-white">From ${gigData.price}</strong>
         </div>
       </div>
     </div>

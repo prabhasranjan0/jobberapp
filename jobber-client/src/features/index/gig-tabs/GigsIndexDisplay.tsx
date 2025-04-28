@@ -45,7 +45,7 @@ const GigsIndexDisplay: FC<IGigsProps> = ({ type }): ReactElement => {
   const gigCategories = categoryName ?? searchParams.get('query');
 
   return (
-    <div className="flex w-screen flex-col">
+    <div className="flex w-screen flex-col bg-brand-darkBlue">
       <Header navClass="navbar peer-checked:navbar-active z-20 w-full border-b border-gray-100 bg-white/90 shadow-2xl shadow-gray-600/5 backdrop-blur dark:border-gray-800 dark:bg-gray-900/80 dark:shadow-none" />
       <div className="relative m-auto mb-10 mt-8 min-h-screen w-screen px-6 xl:container md:px-12 lg:px-6">
         {isLoading && !isSuccess ? (
@@ -68,8 +68,8 @@ const GigsIndexDisplay: FC<IGigsProps> = ({ type }): ReactElement => {
               </>
             ) : (
               <PageMessage
-                header="No services found for your search"
-                body="Try a new search or get a free quote for your project from our commnunity of freelancers."
+                header="Oops !!! No services match your search at the moment."
+                body="Can’t find what you need? Get a free quote from our talented freelancers."
               />
             )}
           </>
