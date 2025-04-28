@@ -1,37 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jobber-auth
+  name: jobber-order
   namespace: production
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: jobber-auth
+      app: jobber-order
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 25%
       maxSurge: 25%
+      maxUnavailable: 25%
   template:
     metadata:
       labels:
-        app: jobber-auth
+        app: jobber-order
     spec:
       containers:
-        - name: jobber-auth
-          image: prabhasranjan0/jobber-auth:stable
+        - name: jobber-order
+          image: prabhasranjan0/jobber-order:stable
           imagePullPolicy: Always
           resources:
-            limits:
-              cpu: "0.5"
-              memory: 1Gi
-            requests:
-              cpu: 100m
-              memory: 150Mi
+            # limits:
+            #   memory: "1Gi"
+            #   cpu: "0.5"
+            # requests:
+            #   cpu: 100m
+            #   memory: 150Mi
           ports:
-            - name: auth
-              containerPort: 4002
+            - name: order
+              containerPort: 4006
           env:
             - name: ENABLE_APM
               value: "1"
@@ -52,11 +52,11 @@ spec:
                 secretKeyRef:
                   name: jobber-backend-secret
                   key: jobber-rabbitmq-endpoint
-            - name: MYSQL_DB
+            - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
                   name: jobber-backend-secret
-                  key: jobber-mysql-db
+                  key: mongo-database-url
             - name: CLOUD_NAME
               valueFrom:
                 secretKeyRef:
@@ -72,10 +72,15 @@ spec:
                 secretKeyRef:
                   name: jobber-backend-secret
                   key: cloud-api-secret
+            - name: API_GATEWAY_URL
+              value: "http://jobber-gateway:4000"
             - name: CLIENT_URL
               value: "https://jobberapp.info"
-            - name: API_GATEWAY_URL
-              value: "http://jobber-gateway.production.svc.cluster.local:4000"
+            - name: STRIPE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jobber-backend-secret
+                  key: stripe-api-key
             - name: ELASTIC_SEARCH_URL
               valueFrom:
                 secretKeyRef:

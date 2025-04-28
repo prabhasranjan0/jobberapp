@@ -23,12 +23,12 @@ spec:
           image: prabhasranjan0/jobber-notification:stable
           imagePullPolicy: Always
           resources:
-            limits:
-              cpu: "0.5"
-              memory: 1Gi
-            requests:
-              cpu: 100m
-              memory: 150Mi
+            # limits:
+            #   cpu: "0.5"
+            #   memory: 1Gi
+            # requests:
+            #   cpu: 100m
+            #   memory: 150Mi
           ports:
             - name: notification
               containerPort: 4001
@@ -38,7 +38,7 @@ spec:
             - name: NODE_ENV
               value: "production"
             - name: CLIENT_URL
-              value: "http://localhost:3000"
+              value: "https://jobberapp.info"
             - name: RABBITMQ_ENDPOINT
               valueFrom:
                 secretKeyRef:

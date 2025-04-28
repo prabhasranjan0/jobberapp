@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jobber-users
+  name: jobber-gig
   namespace: production
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: jobber-users
+      app: jobber-gig
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -16,22 +16,22 @@ spec:
   template:
     metadata:
       labels:
-        app: jobber-users
+        app: jobber-gig
     spec:
       containers:
-        - name: jobber-users
-          image: prabhasranjan0/jobber-users:stable
+        - name: jobber-gig
+          image: prabhasranjan0/jobber-gig:stable
           imagePullPolicy: Always
           resources:
-            limits:
-              cpu: "0.5"
-              memory: 1Gi
-            requests:
-              cpu: 100m
-              memory: 150Mi
+            # limits:
+            #   cpu: "0.5"
+            #   memory: 1Gi
+            # requests:
+            #   cpu: 100m
+            #   memory: 150Mi
           ports:
-            - name: users
-              containerPort: 4003
+            - name: gig
+              containerPort: 4004
           env:
             - name: ENABLE_APM
               value: "1"
