@@ -55,7 +55,7 @@ const GigsIndexDisplay: FC<IGigsProps> = ({ type }): ReactElement => {
             {!isLoading && gigs.length > 0 ? (
               <>
                 <h3 className="mb-5 flex gap-3 text-4xl">
-                  {type === 'search' && <span className="text-black">Results for</span>}
+                  {type === 'search' && <span className="text-white">Results for</span>}
                   <strong className="text-black">{gigCategories}</strong>
                 </h3>
                 <div className="my-5">
