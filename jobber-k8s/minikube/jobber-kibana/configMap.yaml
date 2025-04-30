@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kibana-config
-  namespace: production
+  namespace: bb-prod
 data:
   kibana.yml: |
     server.name: kibana

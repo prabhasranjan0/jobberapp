@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jobber-kibana
-  namespace: production
+  namespace: bb-prod
 spec:
   replicas: 1
   selector:
@@ -36,7 +36,7 @@ spec:
               # add to secret file
               value: kibana
             - name: ELASTICSEARCH_SERVICEACCOUNT_TOKEN
-              value: AAEAAWVsYXN0aWMva2liYW5hL2pvYmJlci1raWJhbmE6REtidUJrS3JRNnlwLXpKb3pEQzNQUQ
+              value: AAEAAWVsYXN0aWMva2liYW5hL2pvYmJlci1raWJhbmE6VW0tbFEySERScldqLVRxOC1QTW1OUQ
           volumeMounts:
             - name: kibana-config
               mountPath: /usr/share/kibana/config

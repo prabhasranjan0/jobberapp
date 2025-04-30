@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jobber-auth
-  namespace: production
+  namespace: bb-prod
 spec:
   replicas: 1
   selector:
