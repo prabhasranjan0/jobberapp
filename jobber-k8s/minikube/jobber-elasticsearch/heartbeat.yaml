@@ -114,7 +114,7 @@ data:
         id: jobber-api-gateway
         name: Jobber API Gateway Service
         schedule: '@every 5s'
-        hosts: ["http://jobber-gateway.production.svc.cluster.local:4000/gateway-health"]
+        hosts: ["http://jobber-gateway.bb-prod.svc.cluster.local:4000/gateway-health"]
         check.request.method: GET
         check.response.status: [200]
 
@@ -122,7 +122,7 @@ data:
         id: jobber-notification
         name: Jobber Notification Service
         schedule: '@every 5s'
-        hosts: ["http://jobber-notification.production.svc.cluster.local:4001/notification-health"]
+        hosts: ["http://jobber-notification.bb-prod.svc.cluster.local:4001/notification-health"]
         check.request.method: GET
         check.response.status: [200]
 
@@ -130,7 +130,7 @@ data:
         id: jobber-auth
         name: Jobber Auth Service
         schedule: '@every 5s'
-        hosts: ["http://jobber-auth.production.svc.cluster.local:4002/auth-health"]
+        hosts: ["http://jobber-auth.bb-prod.svc.cluster.local:4002/auth-health"]
         check.request.method: GET
         check.response.status: [200]
 
@@ -138,7 +138,7 @@ data:
         id: jobber-users
         name: Jobber Users Service
         schedule: '@every 5s'
-        hosts: ["http://jobber-users.production.svc.cluster.local:4003/user-health"]
+        hosts: ["http://jobber-users.bb-prod.svc.cluster.local:4003/user-health"]
         check.request.method: GET
         check.response.status: [200]
 
@@ -146,7 +146,7 @@ data:
         id: jobber-gigs
         name: Jobber Gigs Service
         schedule: '@every 5s'
-        hosts: ["http://jobber-gig.production.svc.cluster.local:4004/gig-health"]
+        hosts: ["http://jobber-gig.bb-prod.svc.cluster.local:4004/gig-health"]
         check.request.method: GET
         check.response.status: [200]
 
@@ -154,7 +154,7 @@ data:
         id: jobber-chat
         name: Jobber Chat Service
         schedule: '@every 5s'
-        hosts: ["http://jobber-chat.production.svc.cluster.local:4005/chat-health"]
+        hosts: ["http://jobber-chat.bb-prod.svc.cluster.local:4005/chat-health"]
         check.request.method: GET
         check.response.status: [200]
 
@@ -162,7 +162,7 @@ data:
         id: jobber-orders
         name: Jobber Orders Service
         schedule: '@every 5s'
-        hosts: ["http://jobber-order.production.svc.cluster.local:4006/order-health"]
+        hosts: ["http://jobber-order.bb-prod.svc.cluster.local:4006/order-health"]
         check.request.method: GET
         check.response.status: [200]
 
@@ -170,7 +170,7 @@ data:
         id: jobber-reviews
         name: Jobber Reviews Service
         schedule: '@every 5s'
-        urls: ["http://jobber-review.production.svc.cluster.local:4007/review-health"]
+        urls: ["http://jobber-review.bb-prod.svc.cluster.local:4007/review-health"]
         check.request.method: GET
         check.response.status: [200]
 

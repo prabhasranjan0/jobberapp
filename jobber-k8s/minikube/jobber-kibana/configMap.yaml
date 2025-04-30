@@ -10,12 +10,12 @@ data:
     server.port: 5601
 
     # Elasticsearch Connection
-    elasticsearch.hosts: ["http://jobber-elastic.production.svc.cluster.local:9200"]
+    elasticsearch.hosts: ["http://jobber-elastic.bb-prod.svc.cluster.local:9200"]
 
     monitoring.ui.container.elasticsearch.enabled: true
     xpack.fleet.enabled: true
     xpack.fleet.agents.enabled: true
-    xpack.fleet.agents.elasticsearch.hosts: ["http://jobber-elastic.production.svc.cluster.local:9200"]
+    xpack.fleet.agents.elasticsearch.hosts: ["http://jobber-elastic.bb-prod.svc.cluster.local:9200"]
     xpack.reporting.roles.enabled: true
     xpack.fleet.agentIdVerificationEnabled: false
     xpack.security.encryptionKey: fhjskloppd678ehkdfdlliverpoolfcr

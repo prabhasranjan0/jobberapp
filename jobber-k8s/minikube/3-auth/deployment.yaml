@@ -75,7 +75,7 @@ spec:
             - name: CLIENT_URL
               value: "https://jobberapp.info"
             - name: API_GATEWAY_URL
-              value: "http://jobber-gateway.production.svc.cluster.local:4000"
+              value: "http://jobber-gateway.bb-prod.svc.cluster.local:4000"
             - name: ELASTIC_SEARCH_URL
               valueFrom:
                 secretKeyRef:
