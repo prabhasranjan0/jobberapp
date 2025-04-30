@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jobber-queue
-  namespace: production
+  namespace: bb-prod
 spec:
   replicas: 1
   selector:
@@ -14,36 +14,36 @@ spec:
         app: jobber-queue
     spec:
       containers:
-      - name: jobber-queue
-        image: rabbitmq:3.12.8-management-alpine
-        env:
-        - name: RABBITMQ_DEFAULT_USER
-          valueFrom:
-            secretKeyRef:
-              name: jobber-backend-secret
-              key: jobber-rabbitmq-user
-        - name: RABBITMQ_DEFAULT_PASS
-          valueFrom:
-            secretKeyRef:
-              name: jobber-backend-secret
-              key: jobber-rabbitmq-password
-        resources:
-          limits:
-            memory: "1Gi"
-            cpu: "0.5"
-          requests:
-            memory: 150Mi
-            cpu: 100m
-        ports:
-        - name: queue
-          containerPort: 5672
-          protocol: TCP
-        - name: mgmt
-          containerPort: 15672
-          protocol: TCP
-        volumeMounts:
-          - name: rabbittmq-aws-storage
-            mountPath: /var/lib/rabbitmq
+        - name: jobber-queue
+          image: rabbitmq:3.12.8-management-alpine
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: jobber-backend-secret
+                  key: jobber-rabbitmq-user
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: jobber-backend-secret
+                  key: jobber-rabbitmq-password
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "0.5"
+            requests:
+              memory: 150Mi
+              cpu: 100m
+          ports:
+            - name: queue
+              containerPort: 5672
+              protocol: TCP
+            - name: mgmt
+              containerPort: 15672
+              protocol: TCP
+          volumeMounts:
+            - name: rabbittmq-aws-storage
+              mountPath: /var/lib/rabbitmq
       volumes:
         - name: rabbittmq-aws-storage
           persistentVolumeClaim:

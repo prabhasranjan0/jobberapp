@@ -2,35 +2,35 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: gateway-external-dns
-  namespace: production
+  namespace: bb-prod
   labels:
     app.kubernetes.io/name: gateway-external-dns
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::144134187792:role/eksctl-jobberapp-addon-iamserviceaccount-prod-Role1-7ZF4FfDDHduS  
+    eks.amazonaws.com/role-arn: arn:aws:iam::144134187792:role/eksctl-jobberapp-addon-iamserviceaccount-prod-Role1-7ZF4FfDDHduS
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: gateway-external-dns
-  namespace: production
+  namespace: bb-prod
   labels:
     app.kubernetes.io/name: gateway-external-dns
 rules:
   - apiGroups: [""]
-    resources: ["services","endpoints","pods","nodes"]
-    verbs: ["get","watch","list"]
-  - apiGroups: ["extensions","networking.k8s.io"]
+    resources: ["services", "endpoints", "pods", "nodes"]
+    verbs: ["get", "watch", "list"]
+  - apiGroups: ["extensions", "networking.k8s.io"]
     resources: ["ingresses"]
-    verbs: ["get","watch","list"]
+    verbs: ["get", "watch", "list"]
   - apiGroups: [""]
     resources: ["nodes"]
-    verbs: ["list","watch"]
+    verbs: ["list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: gateway-external-dns-viewer
-  namespace: production
+  namespace: bb-prod
   labels:
     app.kubernetes.io/name: gateway-external-dns
 roleRef:
@@ -40,13 +40,13 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: gateway-external-dns
-    namespace: production
+    namespace: bb-prod
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gateway-external-dns
-  namespace: production
+  namespace: bb-prod
   labels:
     app.kubernetes.io/name: gateway-external-dns
 spec:
@@ -75,7 +75,7 @@ spec:
             - --txt-owner-id=gateway-external-dns
           resources:
             limits:
-              cpu: '0.5'
+              cpu: "0.5"
               memory: 1Gi
             requests:
               cpu: 100m
