@@ -73,7 +73,7 @@ spec:
                   name: jobber-backend-secret
                   key: cloud-api-secret
             - name: CLIENT_URL
-              value: "https://jobberapp.info"
+              value: "https://bbazaar.com"
             - name: API_GATEWAY_URL
               value: "http://jobber-gateway.bb-prod.svc.cluster.local:4000"
             - name: ELASTIC_SEARCH_URL

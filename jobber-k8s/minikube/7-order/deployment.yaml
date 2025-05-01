@@ -75,7 +75,7 @@ spec:
             - name: API_GATEWAY_URL
               value: "http://jobber-gateway:4000"
             - name: CLIENT_URL
-              value: "https://jobberapp.info"
+              value: "https://bbazaar.com"
             - name: STRIPE_API_KEY
               valueFrom:
                 secretKeyRef:

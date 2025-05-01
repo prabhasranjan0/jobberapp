@@ -38,7 +38,7 @@ spec:
             - name: NODE_ENV
               value: "production"
             - name: CLIENT_URL
-              value: "https://jobberapp.info"
+              value: "https://bbazaar.com"
             - name: RABBITMQ_ENDPOINT
               valueFrom:
                 secretKeyRef:
