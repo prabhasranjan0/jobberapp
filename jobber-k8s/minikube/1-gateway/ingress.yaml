@@ -12,10 +12,10 @@ spec:
         number: 4000
   tls:
     - hosts:
-        - jobberapp.com
+        - api.bbazaar.live
       secretName: gateway-ingress-tls
   rules:
-    - host: jobberapp.com
+    - host: api.bbazaar.live
       http:
         paths:
           - path: /api/gateway/v1

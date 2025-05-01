@@ -11,7 +11,7 @@ openssl req -x509 -new -nodes -key domain.key -sha256 -days 825 -out domain.pem
 # Create CA-signed certs
 ######################
 
-NAME=jobberapp.com # Use your own domain name
+NAME=api.bbazaar.live # Use your own domain name
 # Generate a private key
 openssl genrsa -out $NAME.key 2048
 # Create a certificate-signing request

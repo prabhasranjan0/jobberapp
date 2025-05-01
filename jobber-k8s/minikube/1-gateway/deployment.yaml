@@ -58,7 +58,7 @@ spec:
                   name: jobber-backend-secret
                   key: jwt-token
             - name: CLIENT_URL
-              value: "https://jobberapp.info"
+              value: "https://bbazaar.com"
             - name: AUTH_BASE_URL
               value: "http://jobber-auth.bb-prod.svc.cluster.local:4002"
             - name: USERS_BASE_URL

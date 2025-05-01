@@ -12,10 +12,10 @@ spec:
         number: 80
   tls:
     - hosts:
-        - jobberapp.info
+        - bbazaar.com
       secretName: frontend-ingress-tls
   rules:
-    - host: jobberapp.info
+    - host: bbazaar.com
       http:
         paths:
           - path: /
