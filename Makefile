@@ -2,8 +2,10 @@
 
 USERNAME = prabhasranjan0
 DC = docker-compose -f ./volumes/docker-compose.yaml
-NAMESPACE = production
+NAMESPACE = bb-prod
 GITHUB_REGISTRY = https://npm.pkg.github.com/prabhasranjan0
+RETRIES=3
+DELAY=5
 
 MICROSERVICE_DIRS = $(shell find microservices -maxdepth 1 -type d ! -path microservices)
 
@@ -89,7 +91,7 @@ micro-services:
 ## Kubernetes Targets
 
 apply-minikube:
-	minikube start --memory=max --cpus=max
+	minikube start --memory=8192 --cpus=6
 
 create-namespace:
 	kubectl create namespace $(NAMESPACE)
@@ -106,7 +108,25 @@ endef
 define delete_k8s
 $1-delete:
 	@echo "🗑️ Deleting $1..."
-	kubectl delete -f ./jobber-k8s/minikube/$2
+	kubectl delete -f ./jobber-k8s/minikube/$2 --ignore-not-found --wait=false
+endef
+
+define RETRY_MAKE
+@i=0; \
+until [ $$i -ge $(RETRIES) ]; do \
+	echo "🔄 Attempt $$((i+1)) to run '$(1)'..."; \
+	if $(MAKE) $(1); then \
+		break; \
+	else \
+		echo "⚠️  '$(1)' failed. Retrying in $(DELAY) seconds..."; \
+		i=$$((i+1)); \
+		sleep $(DELAY); \
+	fi; \
+done; \
+if [ $$i -eq $(RETRIES) ]; then \
+	echo "❌ '$(1)' failed after $(RETRIES) attempts."; \
+	exit 1; \
+fi
 endef
 
 $(eval $(call apply_k8s,secrets,jobber-secrets))
@@ -124,9 +144,86 @@ $(foreach svc,0-frontend 1-gateway 2-notifications 3-auth 4-users 5-gig 6-chat 7
 
 init: secrets-apply k8s-apply-ingress-class
 
-core-services-apply: kibana-apply mongo-apply \
+wait-for-elasticsearch: elasticsearch-apply
+	@echo "🔍 Setting up Elasticsearch..."
+	@echo "⏳ Waiting for Elasticsearch..."
+	@echo "Waiting for Elasticsearch pod to be ready (no timeout)..."
+	@until kubectl get pods -l app=jobber-elastic -n $(NAMESPACE) -o jsonpath='{.items[0].status.conditions[?(@.type=="Ready")].status}' | grep -q "True"; do \
+		echo "Still waiting..."; \
+		sleep 5; \
+	done
+	@echo "✅ Elasticsearch pod is Ready!"
+
+reset-kibana-password:
+	@echo "Resetting Kibana system password..."
+	@ELASTIC_POD_NAME=$$(kubectl get pods -n $(NAMESPACE) -l app=jobber-elastic -o jsonpath="{.items[0].metadata.name}"); \
+	kubectl exec -n $(NAMESPACE) -it $$ELASTIC_POD_NAME -- \
+		curl -s -X POST -u elastic:admin1234 \
+		-H "Content-Type: application/json" \
+		http://localhost:9200/_security/user/kibana_system/_password \
+		-d '{"password": "kibana"}'
+
+generate-service-token:
+	echo "🔑 Generating unique Elasticsearch service token..."
+	POD_NAME=$$(kubectl get pods -n $(NAMESPACE) -l app=jobber-elastic -o jsonpath="{.items[0].metadata.name}"); \
+	TOKEN_NAME=jobber-kibana-$$RANDOM$$RANDOM; \
+	echo "➡️ Creating token $$TOKEN_NAME..."; \
+	kubectl exec -n $(NAMESPACE) -c jobber-elastic $$POD_NAME -- \
+		/usr/share/elasticsearch/bin/elasticsearch-service-tokens create elastic/kibana $$TOKEN_NAME > token-output.txt; \
+	TOKEN=$$(grep -o 'AAE[A-Za-z0-9_-]*' token-output.txt); \
+	echo "Token: $$TOKEN"; \
+	# Check if Kibana deployment exists, create it if necessary
+	if ! kubectl get deployment jobber-kibana -n $(NAMESPACE) &>/dev/null; then \
+		echo "➡️ Kibana deployment not found, creating..."; \
+		kubectl apply -f jobber-k8s/minikube/jobber-kibana -n $(NAMESPACE); \
+	fi; \
+	# Patching the Kibana deployment with the new token
+	echo "➡️ Patching Kibana deployment with new token..."; \
+	kubectl patch deployment jobber-kibana -n $(NAMESPACE) \
+		--type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/env/3/value", "value": "'"$$TOKEN"'"}]'; \
+	rm -f token-output.txt; \
+	echo "✅ Token applied to Kibana deployment."
+
+core-services-apply: mongo-apply \
 	mysql-apply postgresql-apply \
 	redis-apply queue-apply
+
+elasticdump-gigs:
+	@echo "📥 Importing Gigs data into Elasticsearch via port-forward..."
+	@PORT_FORWARD_CMD="kubectl port-forward svc/jobber-elastic 9200:9200 -n $(NAMESPACE)"; \
+	echo "➡️ Starting port-forward..."; \
+	$$PORT_FORWARD_CMD & \
+	PF_PID=$$!; \
+	sleep 5; \
+	echo "➡️ Running elasticdump..."; \
+	if ! elasticdump \
+		--input=jobber-k8s/minikube/gigs/gigs.json \
+		--output=http://elastic:admin1234@localhost:9200/gigs \
+		--type=data; then \
+		echo "❌ elasticdump failed"; \
+		kill $$PF_PID; \
+		exit 1; \
+	fi; \
+	echo "✅ Import complete. Cleaning up..."; \
+	kill $$PF_PID
+
+
+all-core-services:
+	@echo "🚀 Starting full initialization sequence..."
+	$(call RETRY_MAKE,init)
+	@sleep $(DELAY)
+	$(call RETRY_MAKE,wait-for-elasticsearch)
+	@sleep $(DELAY)
+	$(call RETRY_MAKE,reset-kibana-password)
+	@sleep $(DELAY)
+	$(call RETRY_MAKE,generate-service-token)
+	@sleep $(DELAY)
+	$(call RETRY_MAKE,core-services-apply)
+	@sleep $(DELAY)
+	$(call RETRY_MAKE,apply-all-client-app)
+	@sleep $(DELAY)
+	$(call RETRY_MAKE,elasticdump-gigs)
+	@echo "✅ All steps completed successfully!"
 
 core-services-delete: elasticsearch-delete kibana-delete \
 	mongo-delete mysql-delete postgresql-delete \
@@ -150,8 +247,46 @@ k8s-apply-ingress-class:
 	@echo "✅ ingress-nginx installed or upgraded."
 
 k8s-delete-ingress-class:
-	@echo "🗑️ Uninstalling ingress-nginx from namespace $(NAMESPACE)..."
-	helm uninstall ingress-nginx --namespace $(NAMESPACE)
-	@echo "✅ ingress-nginx has been uninstalled."
+	@echo "🧹 Cleaning up ingress-nginx Helm release and related resources..."
+	# Uninstall helm release (if it exists)
+	-helm uninstall ingress-nginx --namespace ingress-nginx || true
+	-helm uninstall ingress-nginx --namespace $(NAMESPACE) || true
+
+	# Delete ingress-nginx namespace if desired
+	-kubectl delete namespace ingress-nginx --ignore-not-found --wait=false
+	-kubectl delete namespace $(NAMESPACE) --ignore-not-found --wait=false
+
+	# Delete ClusterRoles and ClusterRoleBindings
+	-kubectl delete clusterrole ingress-nginx --ignore-not-found --wait=false
+	-kubectl delete clusterrolebinding ingress-nginx --ignore-not-found --wait=false
+
+	# Delete any related deployments, services, or serviceaccounts (across all namespaces)
+	-kubectl delete svc ingress-nginx-controller -n ingress-nginx --ignore-not-found --wait=false
+	-kubectl delete deployment ingress-nginx-controller -n ingress-nginx --ignore-not-found --wait=false
+	-kubectl delete sa ingress-nginx -n ingress-nginx --ignore-not-found --wait=false
+
+	@echo "✅ All ingress-nginx and related Helm resources removed."
+
 
 delete-everything: delete-all-client-app core-services-delete delete-namespace
+
+up-all:
+	@echo "🚀 Starting full initialization sequence..."
+	$(call RETRY_MAKE,apply-minikube)
+	@sleep $(DELAY)
+	$(call RETRY_MAKE,create-namespace)
+	@echo "✅ Created minikube and namespace successfully!"
+	@sleep $(DELAY)
+	$(call RETRY_MAKE,all-core-services)
+	@echo "✅ Completed all services successfully!"
+
+remove-everything:
+	@echo "🚀 Starting remove all services sequence..."
+	$(call RETRY_MAKE,delete-all-client-app)
+	@sleep $(DELAY)
+	$(call RETRY_MAKE,core-services-delete)
+	@sleep $(DELAY)
+	$(call RETRY_MAKE,k8s-delete-ingress-class)
+	@sleep $(DELAY)
+	$(call RETRY_MAKE,delete-namespace)
+	@echo "✅ All services removed and namespace completed successfully!"
