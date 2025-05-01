@@ -9,6 +9,11 @@ DELAY=5
 
 MICROSERVICE_DIRS = $(shell find microservices -maxdepth 1 -type d ! -path microservices)
 
+FRONTEND_CERTS_DIR = jobber-k8s/minikube/0-frontend/certs
+
+BACKEND_CERTS_DIR = jobber-k8s/minikube/1-gateway/certs
+
+
 create-npmrc-all:
 	@echo "📦 Creating .npmrc in all microservices..."
 	@for dir in $(MICROSERVICE_DIRS); do \
@@ -267,6 +272,49 @@ k8s-delete-ingress-class:
 
 	@echo "✅ All ingress-nginx and related Helm resources removed."
 
+create-gateway-cert-secret:
+	@echo "🔍 Checking for server certificate files in $(BACKEND_CERTS_DIR)..."
+	@if [ -f "$(BACKEND_CERTS_DIR)/api.bbazaar.live.crt" ]; then \
+		echo "✅ Found server certificate file: api.bbazaar.live.crt"; \
+	else \
+		echo "❌ Missing server certificate file: api.bbazaar.live.crt"; \
+		exit 1; \
+	fi
+	@if [ -f "$(BACKEND_CERTS_DIR)/api.bbazaar.live.key" ]; then \
+		echo "✅ Found key file: api.bbazaar.live.key"; \
+	else \
+		echo "❌ Missing server key file: api.bbazaar.live.key"; \
+		exit 1; \
+	fi
+	@echo "🚀 Attempting to create Kubernetes TLS secret: gateway-ingress-tls"
+	@kubectl -n $(NAMESPACE) create secret tls gateway-ingress-tls \
+		--key $(BACKEND_CERTS_DIR)/api.bbazaar.live.key \
+		--cert $(BACKEND_CERTS_DIR)/api.bbazaar.live.crt && \
+		echo "✅ Successfully created TLS secret: gateway-ingress-tls" || \
+		{ echo "⚠️  Failed to create TLS secret. It may already exist or there was an error."; exit 1; }
+
+
+create-frontend-cert-secret:
+	@echo "🔍 Checking for certificate files in $(FRONTEND_CERTS_DIR)..."
+	@if [ -f "$(FRONTEND_CERTS_DIR)/bbazaar.com.crt" ]; then \
+		echo "✅ Found certificate file: bbazaar.com.crt"; \
+	else \
+		echo "❌ Missing certificate file: bbazaar.com.crt"; \
+		exit 1; \
+	fi
+	@if [ -f "$(FRONTEND_CERTS_DIR)/bbazaar.com.key" ]; then \
+		echo "✅ Found key file: bbazaar.com.key"; \
+	else \
+		echo "❌ Missing key file: bbazaar.com.key"; \
+		exit 1; \
+	fi
+	@echo "🚀 Attempting to create Kubernetes TLS secret: frontend-ingress-tls"
+	@kubectl -n $(NAMESPACE) create secret tls frontend-ingress-tls \
+		--key $(FRONTEND_CERTS_DIR)/bbazaar.com.key \
+		--cert $(FRONTEND_CERTS_DIR)/bbazaar.com.crt && \
+		echo "✅ Successfully created TLS secret: frontend-ingress-tls" || \
+		{ echo "⚠️  Failed to create TLS secret. It may already exist or there was an error."; exit 1; }
+
 
 delete-everything: delete-all-client-app core-services-delete delete-namespace
 
@@ -278,6 +326,10 @@ up-all:
 	@echo "✅ Created minikube and namespace successfully!"
 	@sleep $(DELAY)
 	$(call RETRY_MAKE,all-core-services)
+	@sleep $(DELAY)
+	$(call RETRY_MAKE,create-gateway-cert-secret)
+	@sleep $(DELAY)
+	$(call RETRY_MAKE,create-frontend-cert-secret)
 	@echo "✅ Completed all services successfully!"
 
 remove-everything:
