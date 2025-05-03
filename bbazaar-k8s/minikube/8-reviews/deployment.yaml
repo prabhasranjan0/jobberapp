@@ -70,7 +70,7 @@ spec:
                   name: bbazaar-backend-secret
                   key: bbazaar-postgres-password
             - name: DATABASE_NAME
-              value: "bb_reviews"
+              value: "bbazaar_reviews"
             - name: CLOUD_NAME
               valueFrom:
                 secretKeyRef:

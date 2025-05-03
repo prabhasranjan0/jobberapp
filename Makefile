@@ -248,7 +248,12 @@ k8s-apply-ingress-class:
 	helm repo add ingress-nginx "https://kubernetes.github.io/ingress-nginx"
 	helm repo update
 	helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
-	  --namespace $(NAMESPACE) --create-namespace
+		--namespace $(NAMESPACE) --create-namespace \
+		--set controller.healthCheckPath="/healthz" \
+		--set controller.containerPort.health=10254 \
+		--set controller.livenessProbe.enabled=true \
+		--set controller.readinessProbe.enabled=true \
+		--set controller.image.tag="v1.9.5"
 	@echo "✅ ingress-nginx installed or upgraded."
 
 k8s-delete-ingress-class:
