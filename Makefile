@@ -2,16 +2,16 @@
 
 USERNAME = prabhasranjan0
 DC = docker-compose -f ./volumes/docker-compose.yaml
-NAMESPACE = bb-prod
+NAMESPACE = bbazaar-prod-in
 GITHUB_REGISTRY = https://npm.pkg.github.com/prabhasranjan0
 RETRIES=3
 DELAY=5
 
 MICROSERVICE_DIRS = $(shell find microservices -maxdepth 1 -type d ! -path microservices)
 
-FRONTEND_CERTS_DIR = jobber-k8s/minikube/0-frontend/certs
+FRONTEND_CERTS_DIR = bbazaar-k8s/minikube/0-frontend/certs
 
-BACKEND_CERTS_DIR = jobber-k8s/minikube/1-gateway/certs
+BACKEND_CERTS_DIR = bbazaar-k8s/minikube/1-gateway/certs
 
 
 create-npmrc-all:
@@ -33,7 +33,7 @@ SERVICES = \
     microservices/3-auth-service:auth \
     microservices/2-notification-service:notification \
     microservices/1-gateway-service:gateway \
-    jobber-client:frontend
+    bbazaar-client:frontend
 
 .PHONY: all build push up down logs clean-containers \
 	core-services micro-services elasticsearch kibana \
@@ -50,7 +50,7 @@ build:
 	@$(foreach service, $(SERVICES), \
 		path=$(word 1,$(subst :, ,$(service))); \
 		name=$(word 2,$(subst :, ,$(service))); \
-		image=$(USERNAME)/jobber-$$name; \
+		image=$(USERNAME)/bbazaar-$$name; \
 		echo "➡️  Building $$image from $$path..."; \
 		docker build -t $$image $$path || exit 1; \
 		docker tag $$image $$image:stable; \
@@ -61,7 +61,7 @@ push:
 	@echo "🚀 Pushing Docker images..."
 	@$(foreach service, $(SERVICES), \
 		name=$(word 2,$(subst :, ,$(service))); \
-		image=$(USERNAME)/jobber-$$name; \
+		image=$(USERNAME)/bbazaar-$$name; \
 		echo "⬆️  Pushing $$image:stable..."; \
 		docker push $$image:stable || exit 1; \
 		echo "✅ Pushed $$image:stable"; \
@@ -107,13 +107,13 @@ delete-namespace:
 define apply_k8s
 $1-apply:
 	@echo "📦 Deploying $1..."
-	kubectl apply -f ./jobber-k8s/minikube/$2
+	kubectl apply -f ./bbazaar-k8s/minikube/$2
 endef
 
 define delete_k8s
 $1-delete:
 	@echo "🗑️ Deleting $1..."
-	kubectl delete -f ./jobber-k8s/minikube/$2 --ignore-not-found --wait=false
+	kubectl delete -f ./bbazaar-k8s/minikube/$2 --ignore-not-found --wait=false
 endef
 
 define RETRY_MAKE
@@ -134,13 +134,13 @@ if [ $$i -eq $(RETRIES) ]; then \
 fi
 endef
 
-$(eval $(call apply_k8s,secrets,jobber-secrets))
-$(eval $(call delete_k8s,secrets,jobber-secrets))
+$(eval $(call apply_k8s,secrets,bbazaar-secrets))
+$(eval $(call delete_k8s,secrets,bbazaar-secrets))
 
 $(foreach svc,elasticsearch kibana mongo mysql postgresql redis queue,\
-	$(eval $(call apply_k8s,$(svc),jobber-$(svc))))
+	$(eval $(call apply_k8s,$(svc),bbazaar-$(svc))))
 $(foreach svc,elasticsearch kibana mongo mysql postgresql redis queue,\
-	$(eval $(call delete_k8s,$(svc),jobber-$(svc))))
+	$(eval $(call delete_k8s,$(svc),bbazaar-$(svc))))
 
 $(foreach svc,0-frontend 1-gateway 2-notifications 3-auth 4-users 5-gig 6-chat 7-order 8-reviews,\
 	$(eval $(call apply_k8s,$(svc),$(svc))))
@@ -153,7 +153,7 @@ wait-for-elasticsearch: elasticsearch-apply
 	@echo "🔍 Setting up Elasticsearch..."
 	@echo "⏳ Waiting for Elasticsearch..."
 	@echo "Waiting for Elasticsearch pod to be ready (no timeout)..."
-	@until kubectl get pods -l app=jobber-elastic -n $(NAMESPACE) -o jsonpath='{.items[0].status.conditions[?(@.type=="Ready")].status}' | grep -q "True"; do \
+	@until kubectl get pods -l app=bbazaar-elastic -n $(NAMESPACE) -o jsonpath='{.items[0].status.conditions[?(@.type=="Ready")].status}' | grep -q "True"; do \
 		echo "Still waiting..."; \
 		sleep 5; \
 	done
@@ -161,7 +161,7 @@ wait-for-elasticsearch: elasticsearch-apply
 
 reset-kibana-password:
 	@echo "Resetting Kibana system password..."
-	@ELASTIC_POD_NAME=$$(kubectl get pods -n $(NAMESPACE) -l app=jobber-elastic -o jsonpath="{.items[0].metadata.name}"); \
+	@ELASTIC_POD_NAME=$$(kubectl get pods -n $(NAMESPACE) -l app=bbazaar-elastic -o jsonpath="{.items[0].metadata.name}"); \
 	kubectl exec -n $(NAMESPACE) -it $$ELASTIC_POD_NAME -- \
 		curl -s -X POST -u elastic:admin1234 \
 		-H "Content-Type: application/json" \
@@ -170,21 +170,21 @@ reset-kibana-password:
 
 generate-service-token:
 	echo "🔑 Generating unique Elasticsearch service token..."
-	POD_NAME=$$(kubectl get pods -n $(NAMESPACE) -l app=jobber-elastic -o jsonpath="{.items[0].metadata.name}"); \
-	TOKEN_NAME=jobber-kibana-$$RANDOM$$RANDOM; \
+	POD_NAME=$$(kubectl get pods -n $(NAMESPACE) -l app=bbazaar-elastic -o jsonpath="{.items[0].metadata.name}"); \
+	TOKEN_NAME=bbazaar-kibana-$$RANDOM$$RANDOM; \
 	echo "➡️ Creating token $$TOKEN_NAME..."; \
-	kubectl exec -n $(NAMESPACE) -c jobber-elastic $$POD_NAME -- \
+	kubectl exec -n $(NAMESPACE) -c bbazaar-elastic $$POD_NAME -- \
 		/usr/share/elasticsearch/bin/elasticsearch-service-tokens create elastic/kibana $$TOKEN_NAME > token-output.txt; \
 	TOKEN=$$(grep -o 'AAE[A-Za-z0-9_-]*' token-output.txt); \
 	echo "Token: $$TOKEN"; \
 	# Check if Kibana deployment exists, create it if necessary
-	if ! kubectl get deployment jobber-kibana -n $(NAMESPACE) &>/dev/null; then \
+	if ! kubectl get deployment bbazaar-kibana -n $(NAMESPACE) &>/dev/null; then \
 		echo "➡️ Kibana deployment not found, creating..."; \
-		kubectl apply -f jobber-k8s/minikube/jobber-kibana -n $(NAMESPACE); \
+		kubectl apply -f bbazaar-k8s/minikube/bbazaar-kibana -n $(NAMESPACE); \
 	fi; \
 	# Patching the Kibana deployment with the new token
 	echo "➡️ Patching Kibana deployment with new token..."; \
-	kubectl patch deployment jobber-kibana -n $(NAMESPACE) \
+	kubectl patch deployment bbazaar-kibana -n $(NAMESPACE) \
 		--type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/env/3/value", "value": "'"$$TOKEN"'"}]'; \
 	rm -f token-output.txt; \
 	echo "✅ Token applied to Kibana deployment."
@@ -195,14 +195,14 @@ core-services-apply: mongo-apply \
 
 elasticdump-gigs:
 	@echo "📥 Importing Gigs data into Elasticsearch via port-forward..."
-	@PORT_FORWARD_CMD="kubectl port-forward svc/jobber-elastic 9200:9200 -n $(NAMESPACE)"; \
+	@PORT_FORWARD_CMD="kubectl port-forward svc/bbazaar-elastic 9200:9200 -n $(NAMESPACE)"; \
 	echo "➡️ Starting port-forward..."; \
 	$$PORT_FORWARD_CMD & \
 	PF_PID=$$!; \
 	sleep 5; \
 	echo "➡️ Running elasticdump..."; \
 	if ! elasticdump \
-		--input=jobber-k8s/minikube/gigs/gigs.json \
+		--input=bbazaar-k8s/minikube/gigs/gigs.json \
 		--output=http://elastic:admin1234@localhost:9200/gigs \
 		--type=data; then \
 		echo "❌ elasticdump failed"; \
