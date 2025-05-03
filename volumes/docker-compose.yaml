@@ -34,8 +34,8 @@ services:
     image: mysql
     restart: always
     environment:
-      - MYSQL_USER=jobber
-      - MYSQL_DATABASE=jobber_auth
+      - MYSQL_USER=bbazaar
+      - MYSQL_DATABASE=bbazaar_auth
       - MYSQL_ROOT_PASSWORD=api
       - MYSQL_PASSWORD=api
     ports:
@@ -48,9 +48,9 @@ services:
     image: postgres
     restart: always
     environment:
-      - POSTGRES_USER=jobber
+      - POSTGRES_USER=bbazaar
       - POSTGRES_PASSWORD=api
-      - POSTGRES_DB=jobber_reviews
+      - POSTGRES_DB=bbazaar_reviews
     ports:
       - "5432:5432"
     volumes:
@@ -61,8 +61,8 @@ services:
     image: rabbitmq:3.13-rc-management-alpine
     restart: always
     environment:
-      - RABBITMQ_DEFAULT_USER=jobber
-      - RABBITMQ_DEFAULT_PASS=jobberpass
+      - RABBITMQ_DEFAULT_USER=bbazaar
+      - RABBITMQ_DEFAULT_PASS=bbazaarpass
     ports:
       # AMQP protocol port
       - "5672:5672"
@@ -102,7 +102,7 @@ services:
       - ELASTICSEARCH_HOSTS=["http://elasticsearch_container:9200"]
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=kibana
-      - ELASTICSEARCH_SERVICEACCOUNT_TOKEN=AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYTpGWWgxenc5MVI3NjhSUzF5cWdWUmp3
+      - ELASTICSEARCH_SERVICEACCOUNT_TOKEN=AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYTo1dmUzY2N4UlJTaUhqeWhOUElxRVh3
       - XPACK_FLEET_AGENTS_ELASTICSEARCH_HOSTS=["http://elasticsearch_container:9200"]
     ports:
       - 5601:5601
@@ -211,7 +211,7 @@ services:
       - ENABLE_APM=1
       - NODE_ENV=development
       - CLIENT_URL=http://localhost:3000
-      - RABBITMQ_ENDPOINT=amqp://jobber:jobberpass@rabbitmq_container:5672
+      - RABBITMQ_ENDPOINT=amqp://bbazaar:bbazaarpass@rabbitmq_container:5672
       - SENDER_EMAIL=lysanne.rutherford88@ethereal.email
       - SENDER_EMAIL_PASSWORD=ad8y45AkfebKmW8rCV
       - ELASTIC_SEARCH_URL=http://elastic:admin1234@elasticsearch_container:9200
@@ -236,8 +236,8 @@ services:
       - NODE_ENV=development
       - AP_GATEWAY_URL=http://gateway_container:4000
       - CLIENT_URL=http://localhost:3000
-      - RABBITMQ_ENDPOINT=amqp://jobber:jobberpass@rabbitmq_container:5672
-      - MYSQL_DB=mysql://jobber:api@mysql_container:3306/jobber_auth
+      - RABBITMQ_ENDPOINT=amqp://bbazaar:bbazaarpass@rabbitmq_container:5672
+      - MYSQL_DB=mysql://bbazaar:api@mysql_container:3306/bbazaar_auth
       - CLOUD_NAME=dyamr9ym3
       - CLOUD_API_KEY=385269193982147
       - CLOUD_API_SECRET=-h9hU43QMy68AcIaMyP0ULKbibI
@@ -259,12 +259,12 @@ services:
     env_file: ../microservices/4-users-service/.env
     environment:
       - ENABLE_APM=1
-      - DATABASE_URL=mongodb://mongodb_container:27017/jobber-users
+      - DATABASE_URL=mongodb://mongodb_container:27017/bbazaar-users
       - GATEWAY_JWT_TOKEN=1282722b942e08c8a6cb033aa6ce850e
       - JWT_TOKEN=8db8f85991bb28f45ac0107f2a1b349c
       - NODE_ENV=development
       - AP_GATEWAY_URL=http://gateway_container:4000
-      - RABBITMQ_ENDPOINT=amqp://jobber:jobberpass@rabbitmq_container:5672
+      - RABBITMQ_ENDPOINT=amqp://bbazaar:bbazaarpass@rabbitmq_container:5672
       - CLOUD_NAME=dyamr9ym3
       - CLOUD_API_KEY=385269193982147
       - CLOUD_API_SECRET=-h9hU43QMy68AcIaMyP0ULKbibI
@@ -287,12 +287,12 @@ services:
     env_file: ../microservices/5-gig-service/.env
     environment:
       - ENABLE_APM=1
-      - DATABASE_URL=mongodb://mongodb_container:27017/jobber-gig
+      - DATABASE_URL=mongodb://mongodb_container:27017/bbazaar-gig
       - GATEWAY_JWT_TOKEN=1282722b942e08c8a6cb033aa6ce850e
       - JWT_TOKEN=8db8f85991bb28f45ac0107f2a1b349c
       - NODE_ENV=development
       - AP_GATEWAY_URL=http://gateway_container:4000
-      - RABBITMQ_ENDPOINT=amqp://jobber:jobberpass@rabbitmq_container:5672
+      - RABBITMQ_ENDPOINT=amqp://bbazaar:bbazaarpass@rabbitmq_container:5672
       - CLOUD_NAME=dyamr9ym3
       - CLOUD_API_KEY=385269193982147
       - CLOUD_API_SECRET=-h9hU43QMy68AcIaMyP0ULKbibI
@@ -315,12 +315,12 @@ services:
     env_file: ../microservices/6-chat-service/.env
     environment:
       - ENABLE_APM=1
-      - DATABASE_URL=mongodb://mongodb_container:27017/jobber-chat
+      - DATABASE_URL=mongodb://mongodb_container:27017/bbazaar-chat
       - GATEWAY_JWT_TOKEN=1282722b942e08c8a6cb033aa6ce850e
       - JWT_TOKEN=8db8f85991bb28f45ac0107f2a1b349c
       - NODE_ENV=development
       - AP_GATEWAY_URL=http://gateway_container:4000
-      - RABBITMQ_ENDPOINT=amqp://jobber:jobberpass@rabbitmq_container:5672
+      - RABBITMQ_ENDPOINT=amqp://bbazaar:bbazaarpass@rabbitmq_container:5672
       - CLOUD_NAME=dyamr9ym3
       - CLOUD_API_KEY=385269193982147
       - CLOUD_API_SECRET=-h9hU43QMy68AcIaMyP0ULKbibI
@@ -342,13 +342,13 @@ services:
     env_file: ../microservices/7-order-service/.env
     environment:
       - ENABLE_APM=1
-      - DATABASE_URL=mongodb://mongodb_container:27017/jobber-chat
+      - DATABASE_URL=mongodb://mongodb_container:27017/bbazaar-chat
       - GATEWAY_JWT_TOKEN=1282722b942e08c8a6cb033aa6ce850e
       - JWT_TOKEN=8db8f85991bb28f45ac0107f2a1b349c
       - NODE_ENV=development
       - AP_GATEWAY_URL=http://gateway_container:4000
       - CLIENT_URL=http://localhost:3000
-      - RABBITMQ_ENDPOINT=amqp://jobber:jobberpass@rabbitmq_container:5672
+      - RABBITMQ_ENDPOINT=amqp://bbazaar:bbazaarpass@rabbitmq_container:5672
       - STRIPE_API_KEY=sk_test_51OAXs6DTglvMeJPrlX1Lp9Mw7aXwlBbFJOLQdlkFv5mRKPkQdFrxvYN68xZ54wBr6VbP44khSM5UpPtfaixlMgcW00CIZEpmn5
       - CLOUD_NAME=dyamr9ym3
       - CLOUD_API_KEY=385269193982147
@@ -372,14 +372,14 @@ services:
     environment:
       - ENABLE_APM=1
       - DATABASE_HOST=192.168.0.42
-      - DATABASE_USER=jobber
+      - DATABASE_USER=bbazaar
       - DATABASE_PASSWORD=api
-      - DATABASE_NAME=jobber_reviews
+      - DATABASE_NAME=bbazaar_reviews
       - GATEWAY_JWT_TOKEN=1282722b942e08c8a6cb033aa6ce850e
       - JWT_TOKEN=8db8f85991bb28f45ac0107f2a1b349c
       - NODE_ENV=development
       - AP_GATEWAY_URL=http://gateway_container:4000
-      - RABBITMQ_ENDPOINT=amqp://jobber:jobberpass@rabbitmq_container:5672
+      - RABBITMQ_ENDPOINT=amqp://bbazaar:bbazaarpass@rabbitmq_container:5672
       - CLOUD_NAME=dyamr9ym3
       - CLOUD_API_KEY=385269193982147
       - CLOUD_API_SECRET=-h9hU43QMy68AcIaMyP0ULKbibI
