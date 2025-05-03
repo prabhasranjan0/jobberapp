@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bbazaar-postsql
+  namespace: bbazaar-prod-in
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bbazaar-postsql
+  template:
+    metadata:
+      labels:
+        app: bbazaar-postsql
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: bbazaar-postsql
+          image: postgres:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRES_USER
+              value: bbazaar
+            - name: POSTGRES_PASSWORD
+              value: api
+            - name: POSTGRES_DB
+              value: bbazaar_reviews
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          # resources:
+          #   limits:
+          #     memory: "1Gi"
+          #     cpu: "0.5"
+          #   requests:
+          #     cpu: 100m
+          #     memory: 150Mi
+          ports:
+            - name: bbazaar-postsql
+              containerPort: 5432
+          volumeMounts:
+            - name: postgres-local-storage
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+          readinessProbe:
+            exec:
+              command:
+                [
+                  "psql",
+                  "-w",
+                  "-U",
+                  "bbazaar",
+                  "-d",
+                  "bbazaar_reviews",
+                  "-c",
+                  "SELECT 1",
+                ]
+            initialDelaySeconds: 120
+            periodSeconds: 300
+            timeoutSeconds: 60
+          livenessProbe:
+            exec:
+              command:
+                [
+                  "psql",
+                  "-w",
+                  "-U",
+                  "bbazaar",
+                  "-d",
+                  "bbazaar_reviews",
+                  "-c",
+                  "SELECT 1",
+                ]
+            initialDelaySeconds: 120
+            periodSeconds: 300
+            timeoutSeconds: 60
+      volumes:
+        - name: postgres-local-storage
+
+          # Uncomment the following lines to use a PersistentVolumeClaim
+
+          # persistentVolumeClaim:
+          #   claimName: postgres-pvc
+
+          # Uncomment the following lines to use a hostPath volume
+
+          hostPath:
+            path: /mnt/data/postgres
+            type: DirectoryOrCreate

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bbazaar-kibana
+  namespace: bbazaar-prod-in
+spec:
+  type: ClusterIP
+  selector:
+    app: bbazaar-kibana
+  ports:
+    - name: bbazaar-kibana
+      port: 5601
+      targetPort: 5601
+      protocol: TCP

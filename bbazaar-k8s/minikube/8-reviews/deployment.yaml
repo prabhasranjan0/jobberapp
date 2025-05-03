@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bbazaar-review
+  namespace: bbazaar-prod-in
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bbazaar-review
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: bbazaar-review
+    spec:
+      containers:
+        - name: bbazaar-review
+          image: prabhasranjan0/bbazaar-review:stable
+          imagePullPolicy: Always
+          resources:
+            # limits:
+            #   memory: "1Gi"
+            #   cpu: "0.5"
+            # requests:
+            #   cpu: 100m
+            #   memory: 150Mi
+          ports:
+            - name: review
+              containerPort: 4007
+          env:
+            - name: ENABLE_APM
+              value: "1"
+            - name: NODE_ENV
+              value: "production"
+            - name: CLUSTER_TYPE
+              value: "minikube"
+            - name: GATEWAY_JWT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: bbazaar-backend-secret
+                  key: gateway-jwt-token
+            - name: JWT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: bbazaar-backend-secret
+                  key: jwt-token
+            - name: RABBITMQ_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: bbazaar-backend-secret
+                  key: bbazaar-rabbitmq-endpoint
+            - name: DATABASE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: bbazaar-backend-secret
+                  key: bbazaar-postgres-host
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: bbazaar-backend-secret
+                  key: bbazaar-postgres-user
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bbazaar-backend-secret
+                  key: bbazaar-postgres-password
+            - name: DATABASE_NAME
+              value: "bb_reviews"
+            - name: CLOUD_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: bbazaar-backend-secret
+                  key: cloud-name
+            - name: CLOUD_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: bbazaar-backend-secret
+                  key: cloud-api-key
+            - name: CLOUD_API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: bbazaar-backend-secret
+                  key: cloud-api-secret
+            - name: API_GATEWAY_URL
+              value: "http://bbazaar-gateway.bbazaar-prod-in.svc.cluster.local:4000"
+            - name: ELASTIC_SEARCH_URL
+              valueFrom:
+                secretKeyRef:
+                  name: bbazaar-backend-secret
+                  key: bbazaar-elasticsearch-url
+            - name: ELASTIC_APM_SERVER_URL
+              valueFrom:
+                secretKeyRef:
+                  name: bbazaar-backend-secret
+                  key: bbazaar-elastic-apm-server-url
+            - name: ELASTIC_APM_SECRET_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: bbazaar-backend-secret
+                  key: bbazaar-elastic-apm-secret-token

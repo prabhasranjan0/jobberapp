@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bbazaar-frontend
+  namespace: bbazaar-prod-in
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bbazaar-frontend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  template:
+    metadata:
+      labels:
+        app: bbazaar-frontend
+    spec:
+      containers:
+        - name: bbazaar-frontend
+          image: prabhasranjan0/bbazaar-frontend:stable
+          imagePullPolicy: Always
+          resources:
+            # limits:
+            #   cpu: "0.5"
+            #   memory: 1Gi
+            # requests:
+            #   cpu: 100m
+            #   memory: 150Mi
+          ports:
+            - name: frontend
+              containerPort: 80

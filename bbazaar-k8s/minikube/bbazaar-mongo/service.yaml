@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bbazaar-mongo
+  namespace: bbazaar-prod-in
+spec:
+  type: ClusterIP
+  selector:
+    app: bbazaar-mongo
+  ports:
+    - name: bbazaar-mongo
+      port: 27017
+      targetPort: 27017

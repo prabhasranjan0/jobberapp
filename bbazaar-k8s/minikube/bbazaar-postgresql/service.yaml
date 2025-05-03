@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bbazaar-postsql
+  namespace: bbazaar-prod-in
+spec:
+  type: ClusterIP
+  selector:
+    app: bbazaar-postsql
+  ports:
+    - name: bbazaar-postsql
+      port: 5432
+      targetPort: 5432
