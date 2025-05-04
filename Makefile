@@ -35,7 +35,7 @@ SERVICES = \
     microservices/1-gateway-service:gateway \
     bbazaar-client:frontend
 
-.PHONY: all build push up down logs clean-containers \
+.PHONY: all build push up down \
 	core-services micro-services elasticsearch kibana \
 	apply-minikube create-namespace delete-namespace \
 	apply-all-client-app delete-all-client-app delete-everything \
@@ -73,21 +73,60 @@ down:
 	@echo "🛑 Shutting down all services..."
 	$(DC) down
 
+# Define a retry delay function to add 5 seconds delay if the previous operation isn't complete yet
+define delay
+	@echo "⏳ Waiting for 5 seconds..."
+	@sleep 5
+endef
+
+# Elasticsearch Service
 elasticsearch:
 	@echo "🔍 Starting Elasticsearch..."
 	rm -rf volumes/docker-volumes
 	@$(DC) up -d elasticsearch
-	@echo "⏳ Waiting for Elasticsearch..."
+	@echo "⏳ Waiting for Elasticsearch to be ready..."
 	@until curl -s http://localhost:9200 >/dev/null 2>&1; do printf '.'; sleep 2; done
 	@echo "✅ Elasticsearch is ready."
 
+# Reset Kibana Password
+reset-kibana-pwd:
+	@echo "🔐 Resetting kibana_system password in Docker..."
+	@ELASTIC_CONTAINER=$$(docker ps --filter "name=elasticsearch" --format "{{.Names}}"); \
+	if [ -z "$$ELASTIC_CONTAINER" ]; then echo "❌ Elasticsearch container not found!"; exit 1; fi; \
+	docker exec -i $$ELASTIC_CONTAINER \
+	curl -s -X POST -u elastic:admin1234 \
+		-H "Content-Type: application/json" \
+		http://localhost:9200/_security/user/kibana_system/_password \
+		-d '{"password": "kibana"}'; \
+	echo "✅ Password reset complete."
+
+# Generate and patch Kibana token
+patch-kibana-token:
+	@echo "🔑 Generating Elasticsearch service token for Kibana..."
+	@TOKEN_NAME=kibana-$$RANDOM$$RANDOM; \
+	CONTAINER_NAME=$$(docker ps --filter "name=elasticsearch" --format "{{.Names}}"); \
+	if [ -z "$$CONTAINER_NAME" ]; then echo "❌ Elasticsearch container not found!"; exit 1; fi; \
+	docker exec -i $$CONTAINER_NAME \
+		/usr/share/elasticsearch/bin/elasticsearch-service-tokens create elastic/kibana $$TOKEN_NAME > token-output.txt; \
+	TOKEN=$$(grep -o 'AAE[A-Za-z0-9_-]*' token-output.txt); \
+	echo "✅ Token generated: $$TOKEN"; \
+	echo "ELASTIC_TOKEN=$$TOKEN" > .env; \
+	echo "🔁 Restarting Kibana with new token..."; \
+	docker-compose --env-file .env down kibana; \
+	docker-compose --env-file .env up -d kibana; \
+	rm -f token-output.txt; \
+	rm -f .env; \
+	echo "✅ Kibana is now using the new token."
+
+# Core Services
 core-services:
 	@echo "🚀 Starting core services..."
-	$(DC) up -d redis mongodb mysql postgres rabbitmq apmServer
+	$(DC) up -d redis mongodb mysql postgres rabbitmq apmServer kibana metricbeat heartbeat
+	$(call delay)
 
-kibana:
-	@echo "📊 Starting Kibana..."
-	$(DC) up -d kibana
+# Full Operation: Run all tasks sequentially with delays in between
+all: elasticsearch reset-kibana-pwd patch-kibana-token core-services
+	@echo "✅ All operations completed successfully!"
 
 micro-services:
 	@echo "⚙️ Starting microservices..."
