@@ -491,6 +491,12 @@ Or all at once:
 make delete-everything
 ```
 
+One time deploy:
+
+```bash
+make up-all
+```
+
 ---
 
 ## 📄 11. Notes
